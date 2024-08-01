@@ -148,13 +148,14 @@ async function main() {
 
   for (let i = 3; i < process.argv.length; i++) {
     const networkId = process.argv[i];
-    const chainIdPrefix = process.env.TENDERLY_SKIP_CHAINID_PREFIX ? "" : (process.env.TENDERLY_CHAINID_PREFIX || "7357");
-    const chainId = Number.parseInt(`${chainIdPrefix}${networkId}`);
+    // change 1
+    // const chainIdPrefix = process.env.TENDERLY_SKIP_CHAINID_PREFIX ? "" : (process.env.TENDERLY_CHAINID_PREFIX || "7357");
+    const chainId = 14355;
     const networkName = networks.filter((network: any) => network.id == networkId).map((network: any) => network.slug.replace("-", "_"))[0];
     console.log("Net Name", networkName);
 
     const environmentSlug =
-      process.env.ABSOLUTE_SLUG ??
+      process.env.ABSOLUTE_SLUG ?? 
       `${environmentName}--${networkName.toLowerCase().replace(" ", "-")}--${GIT_REF_NAME!.replace("/", "-")}--${GIT_SHA}`;
 
     const url = await createTestnet(Number.parseInt(networkId), chainId, environmentSlug);
@@ -163,7 +164,7 @@ async function main() {
     chains[`virtual_${networkName}`] = {
       url: url,
       chainId,
-      currency: "VIRT",
+      currency: "VETH", // change 2
     };
   }
 
