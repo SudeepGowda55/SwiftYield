@@ -48,6 +48,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "@balancer-labs/v2-interfaces": "^0.4.0",
     "@openzeppelin/contracts": "^4.8.1",
     "@typechain/ethers-v6": "^0.5.1",
     "dotenv": "^16.0.3",
