@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   14355: {
     FlashLoanRecipient: {
-      address: "0xE6a945fbae47DbCE2b15150e3700e64FAFd81AdF",
+      address: "0xa73B980bf85BB01BD8D15336B387fA9283c3885d",
       abi: [
         {
           inputs: [],
@@ -61,6 +61,24 @@ const deployedContracts = {
         {
           inputs: [
             {
+              internalType: "address",
+              name: "_tokenOut",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "_amountOutMin",
+              type: "uint256",
+            },
+          ],
+          name: "pancakeswapTokens",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
               internalType: "contract IERC20[]",
               name: "tokens",
               type: "address[]",
@@ -99,7 +117,25 @@ const deployedContracts = {
               type: "uint256",
             },
           ],
-          name: "swapTokens",
+          name: "sushiswapTokens",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "_tokenOut",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "_amountOutMin",
+              type: "uint256",
+            },
+          ],
+          name: "uniswapTokens",
           outputs: [],
           stateMutability: "nonpayable",
           type: "function",
