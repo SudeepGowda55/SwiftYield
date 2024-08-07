@@ -3,12 +3,6 @@ import { DeployFunction } from "hardhat-deploy/types";
 import { Contract } from "ethers";
 import { tenderlyFund } from "../scripts/tenderly-fund";
 
-/**
- * Deploys a contract named "YourContract" using the deployer account and
- * constructor arguments set to the deployer address
- *
- * @param hre HardhatRuntimeEnvironment object.
- */
 const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   /*
     On localhost, the deployer account is the one that comes with Hardhat, which is already funded.
