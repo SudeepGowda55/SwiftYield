@@ -7,8 +7,8 @@ type NetworkConfig = {
 export const virtualNetworks: {
   [networkName: string]: NetworkConfig;
 } = {
-  virtual_mainnet: {
-    url: "https://virtual.mainnet.rpc.tenderly.co/78e26687-be6e-4c3e-8c05-f4e6eb051ab5",
+  virtual_base: {
+    url: "https://virtual.base.rpc.tenderly.co/a81476b1-8d3c-4a3d-882e-b91321d5292b",
     chainId: 14355,
     currency: "VETH",
   },

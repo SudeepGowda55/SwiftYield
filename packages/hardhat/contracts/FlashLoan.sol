@@ -12,9 +12,11 @@ contract FlashLoanRecipient is IFlashLoanRecipient {
 
     IVault private constant vault = IVault(0xBA12222222228d8Ba445958a75a0704d566BF2C8);
 
-    IUniswapV2Router02 private constant uniswapRouter = IUniswapV2Router02(0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24); // Base Mainnet
-    // IUniswapV2Router02 private constant uniswapRouter = IUniswapV2Router02(0xeaBcE3E74EF41FB40024a21Cc2ee2F5dDc615791);
-    // IUniswapV2Router02 private constant sushiswapRouter = IUniswapV2Router02(0xeaBcE3E74EF41FB40024a21Cc2ee2F5dDc615791);
+    // Deployments are on Base Mainnet
+
+    IUniswapV2Router02 private constant swapRouter = IUniswapV2Router02(0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24); 
+    IUniswapV2Router02 private constant uniswapRouter = IUniswapV2Router02(0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24); 
+    IUniswapV2Router02 private constant sushiswapRouter = IUniswapV2Router02(0x6BDED42c6DA8FBf0d2bA55B2fa120C5e0c8D7891);
      
     // add other routers
 
@@ -52,12 +54,12 @@ contract FlashLoanRecipient is IFlashLoanRecipient {
         path[0] = _tokenIn;
         path[1] = _tokenOut;
 
-        uniswapRouter.swapExactTokensForTokens( _amountIn, _amountOutMin, path, address(this), block.timestamp);
+        swapRouter.swapExactTokensForTokens( _amountIn, _amountOutMin, path, address(this), block.timestamp);
         // You can now do something with the swapped tokens.
     }
 
     function hello() public pure returns (string memory) {
-        return string("Thank you so much, i am able to buy a coffee");
+        return string("Thank you so much");
     }
 
     // function withdraw(params) {

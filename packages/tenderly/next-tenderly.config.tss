@@ -1,22 +1,22 @@
 import { Chain } from "viem";
 
-export const virtual_mainnet = {
+export const virtual_base = {
   id: 14355 as const,
-  name: "virtual_mainnet",
+  name: "virtual_base",
   nativeCurrency: { name: "vETH", symbol: "vETH", decimals: 18 },
   rpcUrls: {
-    default: { http: ["https://virtual.mainnet.rpc.tenderly.co/78e26687-be6e-4c3e-8c05-f4e6eb051ab5"] },
+    default: { http: ["https://virtual.base.rpc.tenderly.co/a81476b1-8d3c-4a3d-882e-b91321d5292b"] },
   },
   blockExplorers: {
     default: {
       name: "Tenderly Explorer",
-      url: "https://virtual.mainnet.rpc.tenderly.co/78e26687-be6e-4c3e-8c05-f4e6eb051ab5",
+      url: "https://virtual.base.rpc.tenderly.co/a81476b1-8d3c-4a3d-882e-b91321d5292b",
     },
   },
 };
 
-type VirtualChains = [typeof virtual_mainnet];
-export const virtualChains: VirtualChains = [virtual_mainnet];
+type VirtualChains = [typeof virtual_base];
+export const virtualChains: VirtualChains = [virtual_base];
 
 export function isTenderlyVirtualNetwork(network: Chain) {
   return virtualChains.map(chain => chain.id as number).indexOf(network.id) > -1;
