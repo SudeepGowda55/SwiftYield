@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   14355: {
     FlashLoanRecipient: {
-      address: "0xa73B980bf85BB01BD8D15336B387fA9283c3885d",
+      address: "0xa2F4B8A72b9B4c5A967B7Ddfb15E19F48847F853",
       abi: [
         {
           inputs: [],
@@ -108,12 +108,12 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "address",
-              name: "_tokenOut",
+              name: "_tokenIn",
               type: "address",
             },
             {
               internalType: "uint256",
-              name: "_amountOutMin",
+              name: "_amountIn",
               type: "uint256",
             },
           ],

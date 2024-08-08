@@ -59,7 +59,7 @@ contract FlashLoanRecipient is IFlashLoanRecipient {
         // You can now do something with the swapped tokens.
     }
 
-    function sushiswapTokens( address _tokenOut, uint256 _amountOutMin ) external {
+    function sushiswapTokens( address _tokenIn, uint256 _amountIn ) external {
         // require(msg.sender == owner, "Only the owner can initiate swaps");
 
         // Ensure that your contract has received the required tokenIn amount.
@@ -68,8 +68,8 @@ contract FlashLoanRecipient is IFlashLoanRecipient {
         //     "Transfer of tokenIn failed"
         // );
 
-        uint _amountIn = 1000000000000000000; // 1 DIA Tokens  // equivalent 39800000000000 WETH
-        address _tokenIn = 0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb; // DIA Token Address
+        uint _amountOutMin = 1000000000000000000; // 1 DIA Tokens  // equivalent 39800000000000 WETH
+        address _tokenOut = 0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb; // DIA Token Address
 
         IERC20(_tokenIn).approve(address(sushiswapRouter), _amountIn);
 

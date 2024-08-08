@@ -8,7 +8,7 @@ export const virtualNetworks: {
   [networkName: string]: NetworkConfig;
 } = {
   "virtual_base": {
-    "url": "https://virtual.base.rpc.tenderly.co/a81476b1-8d3c-4a3d-882e-b91321d5292b",
+    "url": "https://virtual.base.rpc.tenderly.co/cfbeb8a7-657c-49e4-a7b3-740612a2c4a3",
     "chainId": 14355,
     "currency": "VETH"
   }

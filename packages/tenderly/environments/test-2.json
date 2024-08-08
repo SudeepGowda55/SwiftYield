@@ -1,0 +1,7 @@
+{
+  "virtual_base": {
+    "url": "https://virtual.base.rpc.tenderly.co/cfbeb8a7-657c-49e4-a7b3-740612a2c4a3",
+    "chainId": 14355,
+    "currency": "VETH"
+  }
+}
