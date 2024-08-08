@@ -3,20 +3,19 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { verify } from "../api/worldcoin/route";
+import { verify } from "../api/verify";
 import { IDKitWidget, type ISuccessResult, VerificationLevel } from "@worldcoin/idkit";
 
 const Worldcoin = () => {
   const router = useRouter();
 
-  const onSuccess = (result: ISuccessResult) => {
-    window.alert("Successfully verified with World ID! Your nullifier hash is: " + result.nullifier_hash);
+  const onSuccess = () => {
     router.push("/deploy");
   };
 
   const handleProof = async (result: ISuccessResult) => {
     console.log("Proof received from IDKit, sending to backend: \n", JSON.stringify(result));
-    const data = await verify(result);
+    const data = await verify(result); // sending the data to web backend
     if (data.success) {
       console.log("Successful response from backend:\n", JSON.stringify(data)); // Log the response from our backend for visibility
     } else {
