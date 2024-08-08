@@ -110,4 +110,41 @@ contract FlashLoanRecipient is IFlashLoanRecipient {
     // function withdraw(params) {
     //     code
     // }
+
+      // require(data.length >= 20, "Input data is less than 20 bytes");
+
+        // // Create a new bytes array to store the first 20 bytes
+        // bytes memory first20Bytes = new bytes(20);
+
+        // for (uint i = 0; i < 20; i++) {
+        //     first20Bytes[i] = data[i];
+        // }
+
+        // To determine the First exchange where 
+        // 0x01 -> uniswap
+        // 0x02 -> sushiswap
+        // 0x03 -> pancakeswap
+
+        // To determine the Second exchange where 
+        // 0x0101 -> uniswap
+        // 0x0202 -> sushiswap
+        // 0x0303 -> pancakeswap
+
+        // 0x01024200000000000000000000000000000000000006 -> Next 20 bytes/40 Hex characters is token out address 
+
+        // 0x01024200000000000000000000000000000000000006 Till here 22 bytes will be over
+
+        // Now from 23 bytes upto data.length   
+        
+        // 0x0102420000000000000000000000000000000000000613 -> 1st conversion rate length
+
+        // 0x010242000000000000000000000000000000000000061314 -> 2nd conversion rate length
+
+        // 0x0102420000000000000000000000000000000000000613143250000000 -> 1st conversion rate
+
+        // 0x01024200000000000000000000000000000000000006131432500000004567900000000000000000 -> 2nd conversion rate
+
+        // uint diff = data.length - 22;
+
+        // bytes memory tokenAmountOut = new bytes(diff);
 }
