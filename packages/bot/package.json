@@ -1,0 +1,7 @@
+{
+  "name": "bot",
+  "packageManager": "yarn@3.2.3",
+  "dependencies": {
+    "ethers": "^6.13.2"
+  }
+}
