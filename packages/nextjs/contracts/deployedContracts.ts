@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   14355: {
     FlashLoanRecipient: {
-      address: "0xa2F4B8A72b9B4c5A967B7Ddfb15E19F48847F853",
+      address: "0x83A5A3BA4D8E35c15c37fd35833D87bfcAc14348",
       abi: [
         {
           inputs: [],
@@ -62,6 +62,16 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "address",
+              name: "_tokenIn",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "_amountIn",
+              type: "uint256",
+            },
+            {
+              internalType: "address",
               name: "_tokenOut",
               type: "address",
             },
@@ -72,7 +82,13 @@ const deployedContracts = {
             },
           ],
           name: "pancakeswapTokens",
-          outputs: [],
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
           stateMutability: "nonpayable",
           type: "function",
         },
@@ -116,14 +132,53 @@ const deployedContracts = {
               name: "_amountIn",
               type: "uint256",
             },
+            {
+              internalType: "address",
+              name: "_tokenOut",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "_amountOutMin",
+              type: "uint256",
+            },
           ],
           name: "sushiswapTokens",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes",
+              name: "userData",
+              type: "bytes",
+            },
+          ],
+          name: "swap",
           outputs: [],
           stateMutability: "nonpayable",
           type: "function",
         },
         {
           inputs: [
+            {
+              internalType: "address",
+              name: "_tokenIn",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "_amountIn",
+              type: "uint256",
+            },
             {
               internalType: "address",
               name: "_tokenOut",
@@ -136,7 +191,13 @@ const deployedContracts = {
             },
           ],
           name: "uniswapTokens",
-          outputs: [],
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
           stateMutability: "nonpayable",
           type: "function",
         },
