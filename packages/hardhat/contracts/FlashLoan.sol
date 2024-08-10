@@ -11,8 +11,8 @@ contract FlashLoanRecipient is IFlashLoanRecipient {
 
     IVault private constant vault = IVault(0xBA12222222228d8Ba445958a75a0704d566BF2C8);
 
-    address private constant diaToken = 0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb;
-    uint256 private constant diaInput = 1000000000000000000; // 1 DAI Token
+    address private constant wethToken = 0x4200000000000000000000000000000000000006;
+    uint256 private constant wethInput = 1000000000000000000; // 1 WETH Token
 
     // Deployments are on Base Mainnet
 
@@ -59,7 +59,7 @@ contract FlashLoanRecipient is IFlashLoanRecipient {
     }
 
     function hello() public pure returns (string memory) {
-        return string("Thank you so much");
+        return string("Your Contract is deployed successfully, connect it to the bot");
     }
 
     function makeFlashLoan( IERC20[] memory tokens, uint256[] memory amounts, bytes memory userData) external {
@@ -123,27 +123,27 @@ contract FlashLoanRecipient is IFlashLoanRecipient {
 
         if (userData[0] == 0x01) {
             if (userData[1] == 0x02) {
-                uint256 uniswapReturns = uniswapTokens( diaToken, diaInput, swapTokenAddress, token1Amount);
-                sushiswapTokens(swapTokenAddress, uniswapReturns, diaToken, token2Amount);
+                uint256 uniswapReturns = uniswapTokens( wethToken, wethInput, swapTokenAddress, token1Amount);
+                sushiswapTokens(swapTokenAddress, uniswapReturns, wethToken, token2Amount);
             } else if (userData[1] == 0x03) {
-                uint256 uniswapReturns = uniswapTokens( diaToken, diaInput, swapTokenAddress, token1Amount);
-                pancakeswapTokens(swapTokenAddress, uniswapReturns, diaToken, token2Amount);
+                uint256 uniswapReturns = uniswapTokens( wethToken, wethInput, swapTokenAddress, token1Amount);
+                pancakeswapTokens(swapTokenAddress, uniswapReturns, wethToken, token2Amount);
             }
         } else if (userData[0] == 0x02) {
             if (userData[1] == 0x01) {
-                uint256 sushiswapReturns = sushiswapTokens( diaToken, diaInput, swapTokenAddress, token1Amount );
-                uniswapTokens(swapTokenAddress, sushiswapReturns, diaToken, token2Amount);
+                uint256 sushiswapReturns = sushiswapTokens( wethToken, wethInput, swapTokenAddress, token1Amount );
+                uniswapTokens(swapTokenAddress, sushiswapReturns, wethToken, token2Amount);
             } else if (userData[1] == 0x03) {
-                uint256 sushiswapReturns = sushiswapTokens( diaToken, diaInput, swapTokenAddress, token1Amount );
-                pancakeswapTokens( swapTokenAddress, sushiswapReturns, diaToken, token2Amount );
+                uint256 sushiswapReturns = sushiswapTokens( wethToken, wethInput, swapTokenAddress, token1Amount );
+                pancakeswapTokens( swapTokenAddress, sushiswapReturns, wethToken, token2Amount );
             }
         } else if (userData[0] == 0x03) {
             if (userData[1] == 0x01) {
-                uint256 pancakeReturns = pancakeswapTokens( diaToken, diaInput, swapTokenAddress, token1Amount );
-                uniswapTokens(swapTokenAddress, pancakeReturns, diaToken, token2Amount);
+                uint256 pancakeReturns = pancakeswapTokens( wethToken, wethInput, swapTokenAddress, token1Amount );
+                uniswapTokens(swapTokenAddress, pancakeReturns, wethToken, token2Amount);
             } else if (userData[1] == 0x02) {
-                uint256 pancakeReturns = pancakeswapTokens( diaToken, diaInput, swapTokenAddress, token1Amount );
-                sushiswapTokens(swapTokenAddress, pancakeReturns, diaToken, token2Amount);
+                uint256 pancakeReturns = pancakeswapTokens( wethToken, wethInput, swapTokenAddress, token1Amount );
+                sushiswapTokens(swapTokenAddress, pancakeReturns, wethToken, token2Amount);
             }
         }
     }
@@ -162,22 +162,22 @@ contract FlashLoanRecipient is IFlashLoanRecipient {
     // 0x0202 -> sushiswap
     // 0x0303 -> pancakeswap
 
-    // 0x01024200000000000000000000000000000000000006 -> Next 20 bytes/40 Hex characters is token out address
+    // 0x010250c5725949A6F0c72E6C4a641F24049A917DB0Cb -> Next 20 bytes/40 Hex characters is token out address
 
-    // 0x01024200000000000000000000000000000000000006 Till here 22 bytes will be over
+    // 0x010250c5725949A6F0c72E6C4a641F24049A917DB0Cb Till here 22 bytes will be over
 
     // Now from 23 bytes upto data.length
 
-    // 0x0102420000000000000000000000000000000000000613 -> 1st conversion rate length 23th byte
+    // 0x010250c5725949A6F0c72E6C4a641F24049A917DB0Cb07 -> 1st conversion rate length 23th byte
 
-    // 0x010242000000000000000000000000000000000000061314 -> 2nd conversion rate length 24th byte
+    // 0x010250c5725949A6F0c72E6C4a641F24049A917DB0Cb0708 -> 2nd conversion rate length 24th byte
 
     // This expected values should be hex encoded 
 
-    // 0x0102420000000000000000000000000000000000000613143250000000 -> 1st conversion rate
+    // 0x010250c5725949A6F0c72E6C4a641F24049A917DB0Cb070832240000000000 -> 1st conversion rate
 
-    // 0x01024200000000000000000000000000000000000006131432500000004567900000000000000000 -> 2nd conversion rate
+    // 0x010250c5725949A6F0c72E6C4a641F24049A917DB0Cb0708322400000000008000000000000000 -> 2nd conversion rate
 
-    // 0x0102420000000000000000000000000000000000000607080110D9316EC0000853A0D2313C0000
+    // 0x010250c5725949A6F0c72E6C4a641F24049A917DB0Cb01010000
 }
 
