@@ -6,7 +6,9 @@ import { ethers } from "ethers";
 
 const page = () => {
   const provider = new ethers.JsonRpcProvider("https://sepolia.gateway.tenderly.co/6peYyd1tySn6BPMqtUs4OE");
-  const signer = new ethers.Wallet("", provider);
+  const signer = new ethers.Wallet("cd4c30aefc1eb18a75ada590be78aea2f923ec89643bf94f1a850deab0870138", provider);
+
+  // public address 0x2BAB1A3b3567D6670Fe85fAAc8434A15e0084b7F
 
   const deployContract = async () => {
     const flashLoanContract = new ethers.ContractFactory(abi, bytecode, signer);
