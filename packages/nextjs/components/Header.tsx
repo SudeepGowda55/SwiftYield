@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
 import { Bars3Icon, BugAntIcon } from "@heroicons/react/24/outline";
-import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
+import { FaucetButton } from "~~/components/scaffold-eth";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
 
 // Step 1: Define chains
@@ -131,8 +131,7 @@ export const Header = () => {
         </ul>
       </div>
       <div className="navbar-end flex-grow mr-4">
-        <RainbowKitCustomConnectButton />
-        <FaucetButton />
+        {/* <RainbowKitCustomConnectButton /> */}
         {/* <button
           className="btn btn-primary ml-2"
           onClick={handleWalletConnectClick}
@@ -141,6 +140,7 @@ export const Header = () => {
           WalletConnect
         </button> */}
         <ConnectButton />
+        <FaucetButton />
       </div>
     </div>
   );
