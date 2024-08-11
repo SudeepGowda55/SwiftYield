@@ -1,10 +1,9 @@
 "use client";
 
-import Link from "next/link";
+import Image from "next/image";
 import type { NextPage } from "next";
-// import { useAccount } from "wagmi";
-import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
+// import { useAccount } from "wagmi";
 //import { Address } from "~~/components/scaffold-eth";
 
 const Home: NextPage = () => {
@@ -18,7 +17,7 @@ const Home: NextPage = () => {
               Welcome to{" "}
               <span className="bg-gradient-to-r from-blue-500 to-blue-700 text-transparent bg-clip-text">
                 {" "}
-                FlashBot!
+                SwiftYield!
               </span>{" "}
             </h1>
 
@@ -46,7 +45,7 @@ const Home: NextPage = () => {
           </div>
         </div>
         <div className="bg-black flex justify-center">
-          <img
+          <Image
             src="https://pandatechie.in/wp-content/uploads/2021/10/Flash-Loans.png"
             className="w-screen h-auto p-10 m-6"
             alt="flashloan image"
@@ -116,7 +115,7 @@ const Home: NextPage = () => {
             </span>
             <div className="py-12 mx-20 w-full flex justify-evenly text-xl">
               <div className=" m-10 ">
-                <img
+                <Image
                   src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.cryptopolitan.com%2Fwp-content%2Fuploads%2F2023%2F02%2FEG-203_What-are-Flash-Loans.jpg&f=1&nofb=1&ipt=f443b670cbe2e7af431da848fcbb3c4f34479d1f9bc2dc315f1281549beb589c&ipo=images"
                   alt="flashloan2"
                   className="w-25"
@@ -130,40 +129,6 @@ const Home: NextPage = () => {
                     0 platform fee
                   </span>{" "}
                   Multiplier-Finance, or from PancakeSwap/Uniswap (thanks to flash swap).
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center flex-col justify-between text-align-center flex-grow pt-10 bg-black text-2xl">
-          <div className="flex-grow bg-black w-full mt-16 px-8 py-12">
-            <div className="flex justify-center items-center gap-20 flex-col sm:flex-row">
-              <div className="flex flex-col bg-black text-white border px-10 py-10 text-center items-center max-w-xl rounded-3xl">
-                <BugAntIcon className="h-8 w-8 fill-secondary" />
-                <p>
-                  Tinker with your smart contract using the{" "}
-                  <Link
-                    href="/debug"
-                    passHref
-                    className="link bg-gradient-to-r from-blue-500 to-blue-700 text-transparent bg-clip-text"
-                  >
-                    Debug Contracts
-                  </Link>{" "}
-                  tab.
-                </p>
-              </div>
-              <div className="flex flex-col px-10 py-10 text-center items-center max-w-xl rounded-3xl bg-white">
-                <MagnifyingGlassIcon className="h-8 w-8 fill-secondary" />
-                <p>
-                  Explore your local transactions with the{" "}
-                  <Link
-                    href="/blockexplorer"
-                    className="link bg-gradient-to-r from-blue-700 to-blue-900 text-transparent bg-clip-text"
-                  >
-                    Block Explorer
-                  </Link>{" "}
-                  tab.
                 </p>
               </div>
             </div>
