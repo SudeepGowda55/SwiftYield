@@ -1,8 +1,6 @@
-import React from "react";
 import Link from "next/link";
 import { hardhat } from "viem/chains";
-import { CurrencyDollarIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { HeartIcon } from "@heroicons/react/24/outline";
+import { CurrencyDollarIcon, HeartIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { SwitchTheme } from "~~/components/SwitchTheme";
 import { BuidlGuidlLogo } from "~~/components/assets/BuidlGuidlLogo";
 import { Faucet } from "~~/components/scaffold-eth";
@@ -47,7 +45,7 @@ export const Footer = () => {
         <ul className="menu menu-horizontal w-full">
           <div className="flex justify-center items-center gap-2 text-sm w-full">
             <div className="text-center">
-              <a href="https://github.com/scaffold-eth/se-2" target="_blank" rel="noreferrer" className="link">
+              <a href="https://github.com/SudeepGowda55/SwiftYield" target="_blank" rel="noreferrer" className="link">
                 Fork me
               </a>
             </div>
@@ -58,17 +56,17 @@ export const Footer = () => {
               </p>
               <a
                 className="flex justify-center items-center gap-1"
-                href="https://buidlguidl.com/"
+                href="https://github.com/SudeepGowda55/SwiftYield"
                 target="_blank"
                 rel="noreferrer"
               >
                 <BuidlGuidlLogo className="w-3 h-5 pb-1" />
-                <span className="link">BuidlGuidl</span>
+                <span className="link">SwiftYield</span>
               </a>
             </div>
             <span>·</span>
             <div className="text-center">
-              <a href="https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA" target="_blank" rel="noreferrer" className="link">
+              <a href="https://github.com/SudeepGowda55/SwiftYield" target="_blank" rel="noreferrer" className="link">
                 Support
               </a>
             </div>

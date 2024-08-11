@@ -4,9 +4,36 @@ import React, { useCallback, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import "@rainbow-me/rainbowkit/styles.css";
 import { Bars3Icon, BugAntIcon } from "@heroicons/react/24/outline";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
+
+// Step 1: Define chains
+
+// Step 2: Define your wallet connectors
+
+// const config = getDefaultConfig({
+
+//   appName: 'My RainbowKit App',
+//   projectId: 'YOUR_PROJECT_ID',
+//   chains: [mainnet, polygon, optimism, arbitrum, base],
+//   ssr: true, // If your dApp uses server side rendering (SSR)
+// });
+// const connectors = connectorsForWallets(
+//   [
+//     {
+//       groupName: 'Recommended',
+//       wallets: [rainbowWallet, walletConnectWallet],
+//     },
+//   ],
+//   {
+//     appName: 'My RainbowKit App',
+//     projectId: 'YOUR_PROJECT_ID',
+//   }
+// );
+// Step 3: Create Wagmi config
 
 type HeaderMenuLink = {
   label: string;
@@ -63,6 +90,8 @@ export const Header = () => {
     useCallback(() => setIsDrawerOpen(false), []),
   );
 
+  // const {  isConnected } = useAccount()
+
   return (
     <div className="sticky lg:static top-0 navbar bg-base-100 min-h-0 flex-shrink-0 justify-between z-20 shadow-md shadow-secondary px-0 sm:px-2">
       <div className="navbar-start w-auto lg:w-1/2">
@@ -104,6 +133,14 @@ export const Header = () => {
       <div className="navbar-end flex-grow mr-4">
         <RainbowKitCustomConnectButton />
         <FaucetButton />
+        {/* <button
+          className="btn btn-primary ml-2"
+          onClick={handleWalletConnectClick}
+        >
+        {address}}
+          WalletConnect
+        </button> */}
+        <ConnectButton />
       </div>
     </div>
   );
