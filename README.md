@@ -7,20 +7,30 @@
 🧪 Swift Yield is an advanced Flash Loan Arbitrage bot that harnesses the power of flash loans from Balancer to perform arbitrage trading across various decentralized exchanges (DEXs) on **Base Mainnet**
 
 Currently, Three Decentralised Exchanges are integrated 
-- ✅ **[Uniswap V2](https://app.uniswap.org/?chain=base)**
-      Factory Contract Address,	V2Router02 Contract Address can be found here [https://docs.uniswap.org/contracts/v2/reference/smart-contracts/v2-deployments]
+
+- ✅ **[Uniswap V2](https://app.uniswap.org/?chain=base)**: Factory Contract Address,	V2Router02 Contract Address can be found **[here](https://docs.uniswap.org/contracts/v2/reference/smart-contracts/v2-deployments)**
   
-- 🧱 **[Sushiswap V2](https://www.sushi.com/swap)**
-      Factory Contract Address, V2Router02 Contract Address can be found here [https://docs.uniswap.org/contracts/v2/reference/smart-contracts/v2-deployments]
+- 🧱 **[Sushiswap V2](https://www.sushi.com/swap)**: Factory Contract Address, V2Router02 Contract Address can be found **[here](https://docs.uniswap.org/contracts/v2/reference/smart-contracts/v2-deployments)**
   
-- 🧱 [**Pankcake Swap V2**](https://pancakeswap.finance/info/v2)
-      Factory Contract Address, V2Router02 Contract Address can be found here [https://docs.pancakeswap.finance/developers/smart-contracts/pancakeswap-exchange/v2-contracts]
+- 🧱 [**Pankcake Swap V2**](https://pancakeswap.finance/info/v2): Factory Contract Address, V2Router02 Contract Address can be found **[here](https://docs.pancakeswap.finance/developers/smart-contracts/pancakeswap-exchange/v2-contracts)**
 
 Based on Uniswap V2 Code/Smart Contracts there are 643 Forked Protocols. So we can integrate hundreds of DEX into this bot.
 
-⚙️ Built using NextJS, RainbowKit, Hardhat, Wagmi, Viem, and Typescript.
+The Flash Loan Smart Contract is deployed on **Tenderly's Base Mainnet Virtual Testnet**. 
 
-The Flash Loan Smart Contract is deployed on Tenderly's Base Mainnet Virtual Testnet. You can access the Public Explorer from here[https://dashboard.tenderly.co/explorer/vnet/753ba0a6-023a-4c8d-b3e4-60f03d6dc4b7/transactions?kind=standard]
+You can access the **Public Explorer** from here [https://dashboard.tenderly.co/explorer/vnet/753ba0a6-023a-4c8d-b3e4-60f03d6dc4b7/transactions?kind=standard]
+
+One more major component here is **World ID**
+
+World ID is a digital identity solution that enables users to prove their uniqueness and humanity anonymously via zero-knowledge proofs and advanced privacy-preserving cryptography.
+
+## For Testing the app 
+
+Visit https://swiftyield.vercel.app/ and start arbitrage 
+
+## For Setting up Dev Environment 
+
+⚙️ This application is built using **Scaffold Eth 2**.
 
 ## Requirements
 
@@ -30,19 +40,31 @@ Before you begin, you need to install the following tools:
 - Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
 - [Git](https://git-scm.com/downloads)
 
-## Quickstart
+## Quickstart(dev)
 
-To get started with Scaffold-ETH 2, follow the steps below:
+To get started with Swift Yield, follow the steps below:
+
+1. Install Tenderly CLI
+
+```
+   curl https://raw.githubusercontent.com/Tenderly/tenderly-cli/master/scripts/install-macos.sh | sh
+```
+
+3.  Then login (create account first)
+
+```
+ tenderly login
+```
 
 1. Clone this repo & install dependencies
 
 ```
-git clone https://github.com/scaffold-eth/scaffold-eth-2.git
-cd scaffold-eth-2
+git clone https://github.com/SudeepGowda55/SwiftYield.git
+cd SwiftYield
 yarn install
 ```
 
-2. Run a local network in the first terminal:
+2. To deploy the contract to tenderly:
 
 ```
 yarn chain
@@ -65,14 +87,6 @@ yarn start
 ```
 
 Visit your app on: `http://localhost:3000`. You can interact with your smart contract using the `Debug Contracts` page. You can tweak the app config in `packages/nextjs/scaffold.config.ts`.
-
-**What's next**:
-
-- Edit your smart contract `YourContract.sol` in `packages/hardhat/contracts`
-- Edit your frontend homepage at `packages/nextjs/app/page.tsx`. For guidance on [routing](https://nextjs.org/docs/app/building-your-application/routing/defining-routes) and configuring [pages/layouts](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts) checkout the Next.js documentation.
-- Edit `packages/hardhat/hardhat.config.ts` to enable [verification on Tenderly](https://docs.tenderly.co/contract-verification/hardhat) (`automaticVerifications: true`).
-- Edit your deployment scripts in `packages/hardhat/deploy`
-- Edit your smart contract test in: `packages/hardhat/test`. To run test use `yarn hardhat:test`
 
 ## Connecting to Tenderly TestNet
 
