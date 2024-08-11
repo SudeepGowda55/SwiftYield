@@ -31,6 +31,7 @@ async function main() {
       console.log("   balance:", +ethers.formatEther(balance));
       console.log("   nonce:", +(await provider.getTransactionCount(address)));
     } catch (e) {
+      console.log(e);
       console.log("Can't connect to network", networkName);
     }
   }
