@@ -10,7 +10,7 @@ const Worldcoin = () => {
   const router = useRouter();
 
   const onSuccess = () => {
-    router.push("/arbitrage/base");
+    router.push("/arbitrage/base-mainnet");
   };
 
   const handleProof = async (result: ISuccessResult) => {
