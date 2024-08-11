@@ -53,57 +53,6 @@ const Home: NextPage = () => {
           />
         </div>
 
-        <div className="bg-black ">
-          <div className="text-center">
-            <span className="text-white text-6xl tracking-wide">
-              Start{" "}
-              <span className="bg-gradient-to-r from-blue-500 to-blue-700 text-transparent bg-clip-text">
-                Flash Loan{" "}
-              </span>{" "}
-              Arbitrage now
-            </span>
-            <div className="py-12 w-full flex justify-center text-xl">
-              <div className="border border-gray-200 bg-white m-20 p-10 text-black rounded-xl hover:border-2 hover:border-blue-600 hover:shadow-blue-500/50 transition-all">
-                <h2 className="p-4 text-4xl font-extrabold">ETH</h2>
-                <ul className="list-none space-y-3 text-slate-900 py-4 pb-10">
-                  <li>Minimal Deposit </li>
-                  <li>Recommended Deposit</li>
-                  <li>Recommended Tokens</li>
-                  <li>Firewall and Security</li>
-                  <li>Multiple</li>
-                  <li>Dedicated Support</li>
-                </ul>
-                <a
-                  href="#"
-                  className="text-xl bg-black text-white py-6 px-8 my-6 mx-6 border rounded-2xl  hover:bg-slate-800"
-                >
-                  Start ETH Arbitrage
-                </a>
-              </div>
-              <div
-                className="border border-gray-200 bg-white m-20 p-10 text-black rounded-xl hover:border-2 hover:border-blue-600 hover:shadow-blue-500/50
-            transition-all"
-              >
-                <h2 className="p-4 text-4xl font-extrabold">BASE</h2>
-                <ul className="list-none space-y-3 text-slate-900 py-4 pb-10">
-                  <li>Minimal Deposit </li>
-                  <li>Recommended Deposit</li>
-                  <li>Recommended Tokens</li>
-                  <li>Firewall and Security</li>
-                  <li>Multiple</li>
-                  <li>Dedicated Support</li>
-                </ul>
-                <a
-                  href="#"
-                  className="text-xl bg-black text-white py-6 px-8 my-6 mx-6 border rounded-2xl  hover:bg-slate-800"
-                >
-                  Start Base Arbitrage
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div className="flex flex-col items-center text-center mt-6">
           <h1 className="text-6xl bg-gradient-to-r from-white to-slate-200 text-transparent bg-clip-text">
             Advantages
