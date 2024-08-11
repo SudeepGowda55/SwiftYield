@@ -19,7 +19,6 @@ const Page = () => {
     try {
       const contract = await flashLoanContract.deploy();
       console.log(contract.deploymentTransaction()?.hash);
-      // console.log(await contract.deploymentTransaction()?.wait());
       console.log("printing address", contract.target);
       localStorage.setItem("flashloanAddress", String(contract.target));
       localStorage.setItem("flashloantxhash", String(contract.deploymentTransaction()?.hash));
@@ -55,48 +54,61 @@ const Page = () => {
   }, [contractAddress]);
 
   return (
-    <div>
-      <div>
-        <p>To run the Flash Loan Arbitrage Bot</p>
-        <p> You need to deploy a FlashLoan Contract</p>
-        <p>And you need to run a bot</p>
+    <div className="p-6 font-sans min-h-screen flex flex-col justify-center items-center">
+      {/* Grid Layout for Sections */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl">
+        {/* Left Section */}
+        <div className="flex flex-col items-center gap-4">
+          {/* Instructions */}
+          <div className="p-4 border rounded shadow-md bg-white w-full flex-1">
+            <p className="text-lg font-bold">To run the Flash Loan Arbitrage Bot</p>
+            <p>You need to deploy a FlashLoan Contract</p>
+            <p>And you need to run a bot</p>
+          </div>
+
+          {/* Deploy Contract Button */}
+          <button
+            onClick={deployContract}
+            className="px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-sm"
+          >
+            Deploy contract
+          </button>
+        </div>
+
+        {/* Right Section */}
+        <div className="flex flex-col items-center gap-4">
+          {/* Funds Instructions */}
+          <div className="p-4 border rounded shadow-md bg-white w-full flex-1">
+            <p>Before you deploy the contract make sure you have sufficient funds</p>
+            <p>Get 100 ETH from the faucet</p>
+          </div>
+
+          {/* Get Funds Button */}
+          <button onClick={getFunds} className="px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-sm">
+            Get funds
+          </button>
+        </div>
       </div>
 
-      <div>
-        <p>Before you deploy the contract make sure you have sufficinet funds </p>
-        <p> Get 100 ETH from the faucet</p>
+      {/* Additional Content Centered */}
+      <div className="mt-8 text-center max-w-2xl">
+        <p>
+          After the contract is deployed, you need to run this bot script and provide it with the Flash Loan contract
+          address and a private key that has sufficient ETH to fund transaction gas fees.
+        </p>
+        {contractAddress && (
+          <p className="mt-4">
+            Your Flash Loan contract address is deployed at{" "}
+            <Link
+              href={`https://dashboard.tenderly.co/explorer/vnet/753ba0a6-023a-4c8d-b3e4-60f03d6dc4b7/tx/${flashLoanTxHash}`}
+              target="_blank"
+              className="text-blue-500 underline"
+            >
+              {contractAddress}
+            </Link>
+          </p>
+        )}
       </div>
-      <div>
-        <button onClick={deployContract}>Deploy contract</button>
-      </div>
-      <div>
-        <div>
-          {contractAddress != null ? (
-            <p>
-              {" "}
-              Your Flash Loan contract address is deployed at{" "}
-              <Link
-                href={`https://dashboard.tenderly.co/explorer/vnet/753ba0a6-023a-4c8d-b3e4-60f03d6dc4b7/tx/${flashLoanTxHash}`}
-                target="_blank"
-              >
-                {contractAddress}
-              </Link>
-            </p>
-          ) : (
-            ""
-          )}
-        </div>
-      </div>
-      <div>
-        <button onClick={getFunds}>Get funds</button>
-      </div>
-      <div>
-        <div>
-          After the contract is deployed you need to this bot script and provide it with Flash Loan contract address and
-          private key which has sufficient eth to fund transaction gas fee
-        </div>
-      </div>
-      <div></div>
     </div>
   );
 };

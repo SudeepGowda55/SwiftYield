@@ -10,7 +10,7 @@ const Worldcoin = () => {
   const router = useRouter();
 
   const onSuccess = () => {
-    router.push("/arbitrage/base-mainnet");
+    router.push("/arbitrage/base-tenderly");
   };
 
   const handleProof = async (result: ISuccessResult) => {
@@ -24,29 +24,44 @@ const Worldcoin = () => {
   };
 
   return (
-    <div>
-      <div className="flex flex-col">
-        <p>Verify you are human not a bot</p>
-        <p>you can Verify using world coin simulator</p>
-        <p>
-          {" "}
-          You can access the simulator from here{" "}
-          <span className="text-orange-600">
-            {" "}
-            <Link href={"https://simulator.worldcoin.org/id/0x18310f83"}> Worldcoin Simulator</Link>{" "}
-          </span>{" "}
+    <div className="min-h-screen flex flex-row items-center justify-center bg-gray-100 space-x-6">
+      {/* Human Verification Box */}
+      <div className="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
+        <h1 className="text-2xl font-bold mb-4 text-center">Human Verification</h1>
+        <p className="mb-2 text-center">
+          Please confirm your identity by verifying that you are a human. This step helps us prevent automated access
+          and maintain security.
         </p>
+        <div className="flex justify-center mt-6">
+          <IDKitWidget
+            app_id="app_staging_1c7e9401f6b5e43c4f649812c0c4ef76"
+            action="cloud-verification"
+            onSuccess={onSuccess}
+            handleVerify={handleProof}
+            verification_level={VerificationLevel.Orb}
+          >
+            {({ open }) => (
+              <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition" onClick={open}>
+                Verify with World ID
+              </button>
+            )}
+          </IDKitWidget>
+        </div>
       </div>
-      <div>
-        <IDKitWidget
-          app_id="app_staging_1c7e9401f6b5e43c4f649812c0c4ef76"
-          action="cloud-verification"
-          onSuccess={onSuccess}
-          handleVerify={handleProof}
-          verification_level={VerificationLevel.Orb}
-        >
-          {({ open }) => <button onClick={open}> Verify with World ID</button>}
-        </IDKitWidget>
+
+      {/* Worldcoin Verification Box */}
+      <div className="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
+        <h1 className="text-2xl font-bold mb-4 text-center">Worldcoin Verification</h1>
+        <p className="mb-2 text-center">
+          Verify your identity using the Worldcoin simulator. This innovative tool ensures the authenticity of user
+          identities through advanced verification methods.
+        </p>
+        <p className="mb-6 text-center">
+          Access the simulator here:{" "}
+          <span className="text-orange-600 font-semibold">
+            <Link href={"https://simulator.worldcoin.org/id/0x18310f83"}>Worldcoin Simulator</Link>
+          </span>
+        </p>
       </div>
     </div>
   );
