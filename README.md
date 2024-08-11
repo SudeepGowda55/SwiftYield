@@ -1,21 +1,21 @@
-# 🏗 Scaffold-ETH 2
+# Swift Yield
 
 <h4 align="center">
-  <a href="https://docs.scaffoldeth.io">Documentation</a> |
-  <a href="https://scaffoldeth.io">Website</a>
+  <a href="https://swiftyield.vercel.app/">Swift Yield Website</a>
 </h4>
 
-🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
+🧪 Swift Yield is an advanced Flash Loan Arbitrage bot that harnesses the power of flash loans from Balancer to perform arbitrage trading across various decentralized exchanges (DEXs) on **Base Mainnet**
+
+Currently, Three Decentralised Exchanges are integrated 
+- ✅ **[Uniswap V2](https://app.uniswap.org/?chain=base)**: Factory Contract Address,	V2Router02 Contract Address can be found here [https://docs.uniswap.org/contracts/v2/reference/smart-contracts/v2-deployments]
+- 🧱 **[Sushiswap V2](https://www.sushi.com/swap)**: Factory Contract Address, V2Router02 Contract Address can be found here [https://docs.uniswap.org/contracts/v2/reference/smart-contracts/v2-deployments]
+- 🧱 [**Pankcake Swap V2**](https://pancakeswap.finance/info/v2) Factory Contract Address, V2Router02 Contract Address can be found here [https://docs.pancakeswap.finance/developers/smart-contracts/pancakeswap-exchange/v2-contracts]
+
+Based on Uniswap V2 Code/Smart Contracts there are 643 Forked Protocols. So we can integrate hundreds of DEX into this bot.
 
 ⚙️ Built using NextJS, RainbowKit, Hardhat, Wagmi, Viem, and Typescript.
 
-- ✅ **Contract Hot Reload**: Your frontend auto-adapts to your smart contract as you edit it.
-- 🪝 **[Custom hooks](https://docs.scaffoldeth.io/hooks/)**: Collection of React hooks wrapper around [wagmi](https://wagmi.sh/) to simplify interactions with smart contracts with typescript autocompletion.
-- 🧱 [**Components**](https://docs.scaffoldeth.io/components/): Collection of common web3 components to quickly build your frontend.
-- 🔥 **Burner Wallet & Local Faucet**: Quickly test your application with a burner wallet and local faucet.
-- 🔐 **Integration with Wallet Providers**: Connect to different wallet providers and interact with the Ethereum network.
-
-![Debug Contracts tab](https://github.com/scaffold-eth/scaffold-eth-2/assets/55535804/b237af0c-5027-4849-a5c1-2e31495cccb1)
+The Flash Loan Smart Contract is deployed on Tenderly's Base Mainnet Virtual Testnet. You can access the Public Explorer from here[https://dashboard.tenderly.co/explorer/vnet/753ba0a6-023a-4c8d-b3e4-60f03d6dc4b7/transactions?kind=standard]
 
 ## Requirements
 
@@ -85,15 +85,3 @@ yarn install
 - 
 
 3. 
-
-## Documentation
-
-Visit our [docs](https://docs.scaffoldeth.io) to learn how to start building with Scaffold-ETH 2.
-
-To know more about its features, check out our [website](https://scaffoldeth.io).
-
-## Contributing to Scaffold-ETH 2
-
-We welcome contributions to Scaffold-ETH 2!
-
-Please see [CONTRIBUTING.MD](https://github.com/scaffold-eth/scaffold-eth-2/blob/main/CONTRIBUTING.md) for more information and guidelines for contributing to Scaffold-ETH 2.
