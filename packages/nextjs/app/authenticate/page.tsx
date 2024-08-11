@@ -26,7 +26,7 @@ const Worldcoin = () => {
   return (
     <div className="min-h-screen flex flex-row items-center justify-center bg-gray-100 space-x-6">
       {/* Human Verification Box */}
-      <div className="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
+      <div className="bg-white text-black shadow-md rounded-lg p-8 max-w-md w-full">
         <h1 className="text-2xl font-bold mb-4 text-center">Human Verification</h1>
         <p className="mb-2 text-center">
           Please confirm your identity by verifying that you are a human. This step helps us prevent automated access
@@ -50,7 +50,7 @@ const Worldcoin = () => {
       </div>
 
       {/* Worldcoin Verification Box */}
-      <div className="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
+      <div className="bg-white text-black shadow-md rounded-lg p-8 max-w-md w-full">
         <h1 className="text-2xl font-bold mb-4 text-center">Worldcoin Verification</h1>
         <p className="mb-2 text-center">
           Verify your identity using the Worldcoin simulator. This innovative tool ensures the authenticity of user

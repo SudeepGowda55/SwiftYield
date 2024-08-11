@@ -60,7 +60,7 @@ const Page = () => {
         {/* Left Section */}
         <div className="flex flex-col items-center gap-4">
           {/* Instructions */}
-          <div className="p-4 border rounded shadow-md bg-white w-full flex-1">
+          <div className="p-4 border rounded shadow-md bg-white text-black w-full flex-1">
             <p className="text-lg font-bold">To run the Flash Loan Arbitrage Bot</p>
             <p>You need to deploy a FlashLoan Contract</p>
             <p>And you need to run a bot</p>
@@ -78,7 +78,7 @@ const Page = () => {
         {/* Right Section */}
         <div className="flex flex-col items-center gap-4">
           {/* Funds Instructions */}
-          <div className="p-4 border rounded shadow-md bg-white w-full flex-1">
+          <div className="p-4 border rounded shadow-md bg-white text-black w-full flex-1">
             <p>Before you deploy the contract make sure you have sufficient funds</p>
             <p>Get 100 ETH from the faucet</p>
           </div>
