@@ -25,20 +25,13 @@ const Home: NextPage = () => {
               offers a seamless and risk-free way to capitalize on on-chain arbitrage opportunities. With FlashBot,
               users benefit from automatic pair matching and efficient routing, ensuring optimal execution of trades.
             </p>
-            <div className="flex justify-center my-10">
+            <div className="flex justify-center my-16">
               <a
                 href="/authenticate"
                 className=" text-xl bg-black text-white py-6 px-8 mx-6 border rounded-2xl hover:bg-slate-500"
               >
                 {" "}
                 Start Arbitrage{" "}
-              </a>
-              <a
-                href="/"
-                className="py-6 px-8 mx-6 text-xl rounded-2xl border bg-white hover:bg-zinc-100 hover:text-black"
-              >
-                {" "}
-                Verify using WorldID{" "}
               </a>
             </div>
           </div>
