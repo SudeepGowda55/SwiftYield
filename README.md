@@ -3,7 +3,9 @@
 <h4 align="center">
   <a href="https://swiftyield.vercel.app/">Swift Yield Website</a>
 </h4>
+
 <br />
+
 ![swiftyield](https://github.com/user-attachments/assets/ee3aad79-58d1-4789-9bdc-874bcac50185)
 
 🧪 Swift Yield is an advanced Flash Loan Arbitrage bot that harnesses the power of flash loans from Balancer to perform arbitrage trading across various decentralized exchanges (DEXs) on **Base Mainnet**
@@ -27,11 +29,13 @@ You can access the **Public Explorer** from here [https://dashboard.tenderly.co/
 ![tenderly explorer](https://github.com/user-attachments/assets/6e1553e4-ec51-4238-85bb-da554580e8ab)
 
 <br />
+
 One more major component here is **World ID**
 
 World ID is a digital identity solution that enables users to anonymize their uniqueness and humanity via zero-knowledge proofs and advanced privacy-preserving cryptography.
 
 <br />
+
 ![worldid](https://github.com/user-attachments/assets/da499d64-c0dd-4eb2-ada1-480aa25c0ca7)
 
 
