@@ -38,6 +38,7 @@ World ID is a digital identity solution that enables users to anonymize their un
 
 ![worldid](https://github.com/user-attachments/assets/da499d64-c0dd-4eb2-ada1-480aa25c0ca7)
 
+<br />
 
 ## For Testing the app 
 
@@ -62,6 +63,8 @@ node packages/bot/index.js
 ```
 
 The bot is currently under testing we will provide it soon.
+
+<br />
 
 ## For Setting up Dev Environment 
 
