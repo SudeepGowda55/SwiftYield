@@ -38,26 +38,20 @@ const Home: NextPage = () => {
           </div>
         </div>
         <div className="bg-black flex justify-center">
-          <Image src="/flash.png" className="w-screen h-auto p-10 m-6" width="100" height="100" alt="flashloan image" />
+          <Image src="/flash.png" className="w-screen h-auto m-6" width="100" height="100" alt="flashloan image" />
         </div>
 
         <div className="flex flex-col w-full items-center text-center mt-6">
           <h1 className="text-6xl bg-gradient-to-r from-white to-slate-200 text-transparent bg-clip-text">
-            Advantages
+            Advantages of
           </h1>
           <h1 className="bg-gradient-to-r from-blue-500 to-blue-700 text-5xl text-transparent bg-clip-text p-4">
             Flash Loan
           </h1>
-          <p className="text-gray-400 text-2xl">
-            {" "}
-            Just select a network (ETH or Base) and enter a token address to launch this arbitrage finder
-          </p>
-
           <div className="bg-black lg:mx-20 mx-10">
             <div className="text-center">
               <div className="py-12 w-full flex flex-col gap-4 lg:flex-row lg:gap-8 justify-items-center">
                 <div className="w-full lg:w-1/3 border border-gray-200 bg-white px-4 py-6 text-black rounded-xl hover:border-2 hover:border-blue-600 hover:shadow-blue-500/50 transition-all">
-                  <h2 className="p-4 text-3xl sm:text-4xl font-bold">Add Icon</h2>
                   <h2 className="p-4 text-3xl sm:text-4xl font-bold">Lucrative Opportunities</h2>
                   <p className="text-base sm:text-lg md:text-xl text-slate-800">
                     Flash Loan Arbitrage bots capitalize on price differences across decentralized platforms, offering a
@@ -65,7 +59,6 @@ const Home: NextPage = () => {
                   </p>
                 </div>
                 <div className="w-full lg:w-1/3 border border-gray-200 bg-white px-4 py-6 text-black rounded-xl hover:border-2 hover:border-blue-600 hover:shadow-blue-500/50 transition-all">
-                  <h2 className="p-4 text-3xl sm:text-4xl font-bold">Add Icon</h2>
                   <h2 className="p-4 text-3xl sm:text-4xl font-bold">Efficient Transactions</h2>
                   <p className="text-base sm:text-lg md:text-xl text-slate-800">
                     Flash loans enable swift arbitrage operations within a single blockchain transaction, minimizing
@@ -73,7 +66,6 @@ const Home: NextPage = () => {
                   </p>
                 </div>
                 <div className="w-full lg:w-1/3 border border-gray-200 bg-white px-4 py-6 text-black rounded-xl hover:border-2 hover:border-blue-600 hover:shadow-blue-500/50 transition-all">
-                  <h2 className="p-4 text-3xl sm:text-4xl font-bold">Add Icon</h2>
                   <h2 className="p-4 text-3xl sm:text-4xl font-bold">Automated Precision</h2>
                   <p className="text-base sm:text-lg md:text-xl text-slate-800">
                     Using bots automates the process, allowing for the swift execution of arbitrage strategies with
@@ -92,7 +84,7 @@ const Home: NextPage = () => {
               <span className="bg-gradient-to-r from-blue-500 to-blue-700 text-transparent bg-clip-text">
                 Flash Loans
               </span>{" "}
-              from us
+              from us?
             </span>
             <div className="py-12 lg:px-20 px-4 w-full flex flex-col lg:flex-row justify-evenly text-xl">
               <div className="lg:m-10 m-6 lg:flex-1">
@@ -104,15 +96,10 @@ const Home: NextPage = () => {
                   className="w-full max-w-xl mx-auto lg:mx-0 lg:mr-auto"
                 />
               </div>
-              <div className="lg:m-8 m-6 text-white lg:flex-1 lg:text-left">
-                <h2 className="text-3xl sm:text-4xl font-bold lg:text-left text-center">Get Loan for the Arbitrage</h2>
-                <p className="py-4 sm:py-6 text-lg sm:text-xl lg:text-left text-center max-w-xl lg:mx-0 mx-auto">
-                  Once you have identified a profitable arbitrage opportunity, you can secure a flash loan from various
-                  platforms, such as Multiplier-Finance, PancakeSwap, or Uniswap, allowing you to leverage large amounts
-                  of capital without the need for upfront collateral.
-                </p>
-                <div className="font-bold text-3xl sm:text-4xl bg-gradient-to-r from-slate-400 to-slate-600 text-transparent bg-clip-text lg:text-left text-center">
-                  At 0 Platform fee
+              <div className="lg:m-8 text-white lg:flex-1 py-12 lg:text-left">
+                <div className="font-bold text-3xl sm:text-4xl bg-gradient-to-r from-slate-400 to-slate-600 text-transparent bg-clip-text text-center">
+                  We are using Balancer to get Flash Loan at 0 Fees and there wont be any hidden platform charges, just
+                  pay for transaction fee and keep all the profit for yourself
                 </div>
               </div>
             </div>
