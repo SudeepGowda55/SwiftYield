@@ -12,7 +12,7 @@ Currently, Three Decentralised Exchanges are integrated
   
 - 🧱 **[Sushiswap V2](https://www.sushi.com/swap)**: Factory Contract Address, V2Router02 Contract Address can be found **[here](https://docs.uniswap.org/contracts/v2/reference/smart-contracts/v2-deployments)**
   
-- 🧱 [**Pankcake Swap V2**](https://pancakeswap.finance/info/v2): Factory Contract Address, V2Router02 Contract Address can be found **[here](https://docs.pancakeswap.finance/developers/smart-contracts/pancakeswap-exchange/v2-contracts)**
+- 🧱 **[Pankcake Swap V2](https://pancakeswap.finance/info/v2)**: Factory Contract Address, V2Router02 Contract Address can be found **[here](https://docs.pancakeswap.finance/developers/smart-contracts/pancakeswap-exchange/v2-contracts)**
 
 Based on Uniswap V2 Code/Smart Contracts there are 643 Forked Protocols. So we can integrate hundreds of DEX into this bot.
 
@@ -26,8 +26,13 @@ World ID is a digital identity solution that enables users to anonymize their un
 
 ## For Testing the app 
 
-1. Visit https://swiftyield.vercel.app/ and click on start arbitrage then verify yourself with World ID and then deploy the contract.
-2. After the contract is deployed refresh the page, get the contract address and update the contract address in **packages/bot/index.js** and run **node packages/bot/index.js**
+1. Visit https://swiftyield.vercel.app/ and click on start arbitrage, verify yourself with World ID, then deploy the contract.
+   
+2. After the contract is deployed refresh the page, and copy the contract address.
+   
+3. Clone this repo and run **yarn install** and then update the contract address in **packages/bot/index.js**
+
+4. Run **node packages/bot/index.js**
 
 You can then check the transaction here [https://dashboard.tenderly.co/explorer/vnet/753ba0a6-023a-4c8d-b3e4-60f03d6dc4b7/transactions?kind=standard]
 
@@ -47,7 +52,7 @@ Before you begin, you need to install the following tools:
 - Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
 - [Git](https://git-scm.com/downloads)
 
-## Quickstart(dev)
+## Quickstart
 
 To get started with Swift Yield, follow the steps below:
 
