@@ -28,7 +28,7 @@ World ID is a digital identity solution that enables users to anonymize their un
 
 1. Visit https://swiftyield.vercel.app/ and click on start arbitrage, verify yourself with World ID, then deploy the contract.
    
-2. After the contract is deployed refresh the page, and copy the contract address.
+2. After the contract is deployed copy the contract address.
    
 3. Clone this repo and run **yarn install** and then update the contract address in **packages/bot/index.js**
 
@@ -38,7 +38,7 @@ You can then check the transaction here [https://dashboard.tenderly.co/explorer/
 
 The Transaction may fail because of the gas fees issue, we are optimizing the contract code, so until then please rerun **node packages/bot/index.js**
 
-The bot is currently under testing.
+The bot is currently under testing we will provide as soon as possible
 
 ## For Setting up Dev Environment 
 
@@ -52,9 +52,7 @@ Before you begin, you need to install the following tools:
 - Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
 - [Git](https://git-scm.com/downloads)
 
-## Quickstart
-
-To get started with Swift Yield, follow the steps below:
+To get started with Swift Yield Development, follow the steps below:
 
 1. Install Tenderly CLI
 
@@ -62,13 +60,13 @@ To get started with Swift Yield, follow the steps below:
    curl https://raw.githubusercontent.com/Tenderly/tenderly-cli/master/scripts/install-macos.sh | sh
 ```
 
-3.  Then login (create account first)
+2.  Then login (create an account first)
 
 ```
  tenderly login
 ```
 
-1. Clone this repo & install dependencies
+3. Clone this repo & install dependencies
 
 ```
 git clone https://github.com/SudeepGowda55/SwiftYield.git
@@ -76,43 +74,68 @@ cd SwiftYield
 yarn install
 ```
 
-2. To deploy the contract to tenderly:
+4. To deploy the contract to tenderly:
+
+Create packages/tenderly/.env
 
 ```
-yarn chain
+# https://docs.tenderly.co/account/projects/account-project-slug
+TENDERLY_ACCOUNT_ID=
+TENDERLY_PROJECT_ID=
+
+# https://docs.tenderly.co/account/projects/how-to-generate-api-access-token
+TENDERLY_ACCESS_TOKEN=
 ```
 
-This command starts a local Ethereum network using Hardhat. The network runs on your local machine and can be used for testing and development. You can customize the network configuration in `hardhat.config.ts`.
-
-3. On a second terminal, deploy the test contract:
+Create packages/hardhat/.env
 
 ```
-yarn deploy
+ALCHEMY_API_KEY= # leave empty
+# DEPLOYER_PRIVATE_KEY=
+ETHERSCAN_API_KEY= # leave empty
+
+# https://docs.tenderly.co/account/projects/account-project-slug
+TENDERLY_ACCOUNT_ID=
+TENDERLY_PROJECT_ID=
+# https://docs.tenderly.co/account/projects/how-to-generate-api-access-token
+TENDERLY_ACCESS_TOKEN=
+TENDERLY_AUTOMATIC_VERIFICATIONS=true
 ```
 
-This command deploys a test smart contract to the local network. The contract is located in `packages/hardhat/contracts` and can be modified to suit your needs. The `yarn deploy` command uses the deploy script located in `packages/hardhat/deploy` to deploy the contract to the network. You can also customize the deploy script.
+Create a staging environment
 
-4. On a third terminal, start your NextJS app:
-
-```
-yarn start
-```
-
-Visit your app on: `http://localhost:3000`. You can interact with your smart contract using the `Debug Contracts` page. You can tweak the app config in `packages/nextjs/scaffold.config.ts`.
-
-## Connecting to Tenderly TestNet
-
-1. Clone this repo & install dependencies
+Note: use different environment name (test-1) every time
 
 ```
-git clone https://github.com/scaffold-eth/scaffold-eth-2.git
-cd scaffold-eth-2
-yarn install
+cd packages/tenderly
+yarn stage:new test-1 8453
+yarn stage:activate test-1
+yarn stage:connect:hardhat
+yarn stage:connect:nextjs
 ```
 
-2. Configure the TestNet
+Now deploy the contract by running
 
-- Edit `packages/hardhat/hardhat.config.ts` and copy the correct snippet from [**Virtual TestNets > Integrations**](https://dashboard.tenderly.co/project/virtual-testnets/integrations)
-- 
+```
+cd packages/hardhat
+yarn deploy --network virtual_mainnet
+```
+Now the contract will be deployed
 
-3. 
+5. To start NextJS app:
+
+```
+cd packages/nextjs
+yarn dev
+```
+
+Visit the app on: `http://localhost:3000`. You can tweak the app config in `packages/nextjs/scaffold.config.ts`.
+
+6. Now to interact with the smart contract and perform Flash Loan Arbitrage
+
+Note: update your private key and the newly deployed contract address
+
+```
+cd packages/bot
+node arbitrageBot.js
+```
