@@ -40,11 +40,7 @@ const Home: NextPage = () => {
           </div>
         </div>
         <div className="bg-black flex justify-center">
-          <Image
-            src="https://pandatechie.in/wp-content/uploads/2021/10/Flash-Loans.png"
-            className="w-screen h-auto p-10 m-6"
-            alt="flashloan image"
-          />
+          <Image src="/flash.png" className="w-screen h-auto p-10 m-6" width="100" height="100" alt="flashloan image" />
         </div>
 
         <div className="flex flex-col w-full items-center text-center mt-6">
@@ -103,8 +99,10 @@ const Home: NextPage = () => {
             <div className="py-12 lg:px-20 px-4 w-full flex flex-col lg:flex-row justify-evenly text-xl">
               <div className="lg:m-10 m-6 lg:flex-1">
                 <Image
-                  src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.cryptopolitan.com%2Fwp-content%2Fuploads%2F2023%2F02%2FEG-203_What-are-Flash-Loans.jpg&f=1&nofb=1&ipt=f443b670cbe2e7af431da848fcbb3c4f34479d1f9bc2dc315f1281549beb589c&ipo=images"
+                  src="/flash1.png"
                   alt="flashloan2"
+                  width="100"
+                  height="100"
                   className="w-full max-w-xl mx-auto lg:mx-0 lg:mr-auto"
                 />
               </div>
