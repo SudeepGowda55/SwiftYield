@@ -1,9 +1,7 @@
 import { ethers } from "ethers";
-import { routerABI } from "./abi.js";
 
-const provider = new ethers.JsonRpcProvider(
-  "https://base.gateway.tenderly.co/6vvL0AUXcp7G6EoSj73kb2"
-);
+const routerABI = ["function getAmountsOut(uint amountIn, address[] memory path) public view returns (uint[] memory amounts)"]
+const provider = new ethers.JsonRpcProvider("https://virtual.base.rpc.tenderly.co/753ba0a6-023a-4c8d-b3e4-60f03d6dc4b7");
 
 // Tokens and router addresses
 const WETH_ADDRESS = "0x4200000000000000000000000000000000000006";
