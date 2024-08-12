@@ -17,12 +17,12 @@ const Home: NextPage = () => {
               Welcome to{" "}
               <span className="bg-gradient-to-r from-blue-500 to-blue-700 text-transparent bg-clip-text">
                 {" "}
-                FlashBot!
+                Swift Yield!
               </span>{" "}
             </h1>
 
             <p className="mt-10 text-2xl text-center text-gray-400">
-              FlashBot is a pioneering no-code arbitrage trading bot designed to harness the power of flash loans. It
+              SwiftYield is a pioneering no-code arbitrage trading bot designed to harness the power of flash loans. It
               offers a seamless and risk-free way to capitalize on on-chain arbitrage opportunities. With FlashBot,
               users benefit from automatic pair matching and efficient routing, ensuring optimal execution of trades.
             </p>
