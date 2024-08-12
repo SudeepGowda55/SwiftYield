@@ -1,11 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import type { NextPage } from "next";
-// import { useAccount } from "wagmi";
-import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
+// import { useAccount } from "wagmi";
 //import { Address } from "~~/components/scaffold-eth";
 
 const Home: NextPage = () => {
@@ -99,7 +97,7 @@ const Home: NextPage = () => {
             <div className="py-12 lg:px-20 px-4 w-full flex flex-col lg:flex-row justify-evenly text-xl">
               <div className="lg:m-10 m-6 lg:flex-1">
                 <Image
-                  src="/flash1.png"
+                  src="/flash1.jpg"
                   alt="flashloan2"
                   width="100"
                   height="100"
@@ -116,40 +114,6 @@ const Home: NextPage = () => {
                 <div className="font-bold text-3xl sm:text-4xl bg-gradient-to-r from-slate-400 to-slate-600 text-transparent bg-clip-text lg:text-left text-center">
                   At 0 Platform fee
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center flex-col justify-between text-align-center flex-grow pt-10 bg-black text-2xl">
-          <div className="flex-grow bg-black w-full mt-16 px-8 py-12">
-            <div className="flex justify-center items-center gap-20 flex-col sm:flex-row">
-              <div className="flex flex-col bg-black text-white border px-10 py-10 text-center items-center max-w-xl rounded-3xl">
-                <BugAntIcon className="h-8 w-8 fill-secondary" />
-                <p>
-                  Tinker with your smart contract using the{" "}
-                  <Link
-                    href="/debug"
-                    passHref
-                    className="link bg-gradient-to-r from-blue-500 to-blue-700 text-transparent bg-clip-text"
-                  >
-                    Debug Contracts
-                  </Link>{" "}
-                  tab.
-                </p>
-              </div>
-              <div className="flex flex-col px-10 py-10 text-center items-center max-w-xl rounded-3xl bg-white">
-                <MagnifyingGlassIcon className="h-8 w-8 fill-secondary" />
-                <p>
-                  Explore your local transactions with the{" "}
-                  <Link
-                    href="/blockexplorer"
-                    className="link bg-gradient-to-r from-blue-700 to-blue-900 text-transparent bg-clip-text"
-                  >
-                    Block Explorer
-                  </Link>{" "}
-                  tab.
-                </p>
               </div>
             </div>
           </div>
