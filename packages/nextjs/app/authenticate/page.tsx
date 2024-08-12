@@ -81,7 +81,8 @@ const Worldcoin = () => {
             <b>Make sure the identity is orb and device verified</b>
           </p>
           <p>
-            If you are not able to verify it, just move to the Flash Loan contract deploy page by clicking here{" "}
+            For the time being If you are not able to verify it, just move to the Flash Loan contract deploy page by
+            clicking here{" "}
             <Link href="/arbitrage/base-tenderly" className="text-orange-500">
               /arbitrage/base-tenderly
             </Link>{" "}
