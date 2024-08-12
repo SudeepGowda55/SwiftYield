@@ -22,11 +22,18 @@ You can access the **Public Explorer** from here [https://dashboard.tenderly.co/
 
 One more major component here is **World ID**
 
-World ID is a digital identity solution that enables users to prove their uniqueness and humanity anonymously via zero-knowledge proofs and advanced privacy-preserving cryptography.
+World ID is a digital identity solution that enables users to anonymize their uniqueness and humanity via zero-knowledge proofs and advanced privacy-preserving cryptography.
 
 ## For Testing the app 
 
-Visit https://swiftyield.vercel.app/ and start arbitrage 
+1. Visit https://swiftyield.vercel.app/ and click on start arbitrage then verify yourself with World ID and then deploy the contract.
+2. After the contract is deployed refresh the page, get the contract address and update the contract address in **packages/bot/index.js** and run **node packages/bot/index.js**
+
+You can then check the transaction here [https://dashboard.tenderly.co/explorer/vnet/753ba0a6-023a-4c8d-b3e4-60f03d6dc4b7/transactions?kind=standard]
+
+The Transaction may fail because of the gas fees issue, we are optimizing the contract code, so until then please rerun **node packages/bot/index.js**
+
+The bot is currently under testing.
 
 ## For Setting up Dev Environment 
 
