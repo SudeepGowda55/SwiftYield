@@ -32,13 +32,17 @@ World ID is a digital identity solution that enables users to anonymize their un
    
 3. Clone this repo and run **yarn install** and then update the contract address in **packages/bot/index.js**
 
-4. Run **node packages/bot/index.js**
+4. Then Run
+   
+   ```
+   node packages/bot/index.js**
+   ```
 
 You can then check the transaction here [https://dashboard.tenderly.co/explorer/vnet/753ba0a6-023a-4c8d-b3e4-60f03d6dc4b7/transactions?kind=standard]
 
 The Transaction may fail because of the gas fees issue, we are optimizing the contract code, so until then please rerun **node packages/bot/index.js**
 
-The bot is currently under testing we will provide as soon as possible
+The bot is currently under testing we will provide it soon.
 
 ## For Setting up Dev Environment 
 
