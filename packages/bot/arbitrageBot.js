@@ -1,7 +1,18 @@
 import { ethers } from "ethers";
+import fs from "fs";
+import { contractAddress, privateKey } from "./userDetails.js";
+import { fecthData } from "./contractCall.js";
 
-const routerABI = ["function getAmountsOut(uint amountIn, address[] memory path) public view returns (uint[] memory amounts)"]
-const provider = new ethers.JsonRpcProvider("https://virtual.base.rpc.tenderly.co/753ba0a6-023a-4c8d-b3e4-60f03d6dc4b7");
+const routerABI = [
+  "function getAmountsOut(uint amountIn, address[] memory path) public view returns (uint[] memory amounts)",
+];
+
+const provider = new ethers.JsonRpcProvider(
+  "https://base.gateway.tenderly.co/6vvL0AUXcp7G6EoSj73kb2"
+);
+
+let count = 7;
+let entry = 0;
 
 // Tokens and router addresses
 const WETH_ADDRESS = "0x4200000000000000000000000000000000000006";
@@ -22,6 +33,10 @@ const minPrices = {
     exchange: null,
   },
 };
+
+let uniswapReverseCal = 0;
+let sushiReverseCal = 0;
+let pancakeReverseCal = 0;
 
 async function getPriceFromDex(
   humanFormat,
@@ -54,26 +69,55 @@ async function getPriceFromDex(
     toAddress,
   ]);
 
-  // Ensure amountsOut[1] is a BigNumber and format it
-  //   const humanOutput = ethers.formatUnits(amountsOut[1], 18);
-  //   let result;
-
-  //   if (flag === 0) {
-  //     //console.log("Human-readable output:", humanOutput);
-  //     result = humanOutput;
-  //     console.log(
-  //       `${humanFormat} ${token[fromAddress]} = ${humanOutput} ${token[toAddress]} on ${exchange[routerAddress]}`
-  //     );
-  //   } else {
-  //     result = 1.0 / humanOutput;
-  //   }
-
-  //   return result;
   let humanOutput = ethers.formatUnits(amountsOut[1].toString(), 18);
-  let result = humanOutput * 100.0;
-  console.log(
-    `${humanFormat} ${token[fromAddress]} = ${result} ${token[toAddress]} on ${exchange[routerAddress]}`
-  );
+
+  if (count > 0) {
+    let result = humanOutput * 100.0;
+    if (token[fromAddress] !== "DIA") {
+      console.log(
+        `${humanFormat * 100.0} ${token[fromAddress]} = ${result} ${
+          token[toAddress]
+        } on ${exchange[routerAddress]}`
+      );
+    }
+    count -= 1;
+
+    const zero_zero_one_weth_uni = result.toFixed(3);
+
+    const one_dai_uni = 0.01 / result.toFixed(2);
+
+    const completePrice = one_dai_uni * zero_zero_one_weth_uni;
+    //console.log(completePrice);
+    entry = entry + 1;
+    if (entry == 1) uniswapReverseCal = completePrice;
+    else if (entry == 2) sushiReverseCal = completePrice;
+    else if (entry == 3) pancakeReverseCal = completePrice;
+
+    return result;
+  } else {
+    let result = humanOutput * 1.0;
+    if (token[fromAddress] !== "DIA") {
+      console.log(
+        `${humanFormat} ${token[fromAddress]} = ${result} ${token[toAddress]} on ${exchange[routerAddress]}`
+      );
+    }
+
+    const zero_zero_one_weth_uni = result.toFixed(3);
+
+    const one_dai_uni = humanFormat / result.toFixed(2);
+
+    const completePrice = one_dai_uni * zero_zero_one_weth_uni;
+    entry = entry + 1;
+    if (entry == (entry % 4 == 0)) uniswapReverseCal = completePrice;
+    else if (entry == (entry % 5 == 0)) sushiReverseCal = completePrice;
+    else if (entry == (entry % 6 == 0)) pancakeReverseCal = completePrice;
+
+    return result;
+  }
+}
+
+async function getPriceFromDexReverse(humanFormat) {
+  const result = 1.0 / humanFormat;
 
   return result;
 }
@@ -195,10 +239,13 @@ async function findBestSwapBackward(currentValue, fromToken) {
       1
     );
 
-    // Subtract the current value from the minimum DIA value
-    const remainingValue = currentValue - minPrices.DIA.value;
-    console.log(`Remaining Value after DIA swap: ${remainingValue}`);
-    return remainingValue;
+    const minDiaValue = minPrices.DIA.value;
+    const bestExchange = minPrices.DIA.exchange;
+
+    console.log(
+      `Best exchange for DIA swap: ${bestExchange} with value: ${minDiaValue}`
+    );
+    return { bestExchange, minDiaValue };
   } else if (fromToken === ZRO_ADDRESS) {
     prices.uniswapZro = await getPrice(
       currentValue,
@@ -222,29 +269,40 @@ async function findBestSwapBackward(currentValue, fromToken) {
       1
     );
 
-    // Subtract the current value from the minimum ZRO value
-    const remainingValue = currentValue - minPrices.ZRO.value;
-    console.log(`Remaining Value after ZRO swap: ${remainingValue}`);
-    return remainingValue;
+    // Find the exchange with the minimum ZRO value
+    const minZroValue = Math.min(
+      prices.uniswapZro,
+      prices.sushiswapZro,
+      prices.pancakeswapZro
+    );
+    let bestExchange = "";
+
+    switch (minZroValue) {
+      case prices.uniswapZro:
+        bestExchange = "Uniswap";
+        break;
+      case prices.sushiswapZro:
+        bestExchange = "Sushiswap";
+        break;
+      case prices.pancakeswapZro:
+        bestExchange = "Pancakeswap";
+        break;
+    }
+
+    console.log(
+      `Best exchange for ZRO swap: ${bestExchange} with value: ${minZroValue}`
+    );
+    return { bestExchange, minZroValue };
   }
 
   // If no matching token is found, return the original current value
   return currentValue;
 }
 
-// async function executeSwap(bestOption) {
-//   const [exchange, token] = bestOption.split(/(?=[A-Z])/);
-
-//   const toAddress = token === "Dia" ? DIA_ADDRESS : ZRO_ADDRESS;
-//   const fromAddress = WETH_ADDRESS;
-
-//   console.log(`${fromAddress} to ${toAddress} with ${exchange}`);
-//   return { exchange, toAddress };
-// }
-
 async function main() {
   let currentToken = WETH_ADDRESS;
   let currentValue = "0.0001";
+
   while (true) {
     const bestOption = await findBestSwapForward(currentValue);
     console.log("Best swap forward:", bestOption);
@@ -283,34 +341,115 @@ async function main() {
     );
     console.log("Best swap backward:", bestReturnOption);
 
-    // Estimate gas cost for the backward swap (replace with actual implementation)
+    console.log(`${currentValue} DIA = ${uniswapReverseCal} WETH on UNISWAP`);
+    console.log(`${currentValue} DIA = ${sushiReverseCal} WETH on SUSHISWAP`);
+    console.log(`${currentValue} DIA = ${pancakeReverseCal} WETH on PANCAKE`);
+
     const gasCost2 = 0.00002;
-    currentValue = bestReturnOption.toString();
-    temp = temp = parseFloat(currentValue);
-    result = temp - gasCost2;
-    console.log("Final remaining:", result);
-    console.log("Current Value: ", currentValue);
-    const [exchange2, token2] = bestOption.split(/(?=[A-Z])/);
+    const exchange2 = bestReturnOption.bestExchange;
+    console.log(exchange2);
     const toAddress2 = token === "Dia" ? DIA_ADDRESS : ZRO_ADDRESS;
     console.log(`${toAddress2} to ${WETH_ADDRESS} with ${exchange2}`);
     currentToken = toAddress2;
-    currentValue = await getPriceFromDex(
-      currentValue,
-      currentToken,
-      WETH_ADDRESS,
-      {
-        uniswap: UNISWAP_ROUTER_ADDRESS,
-        sushiswap: SUSHISWAP_ROUTER_ADDRESS,
-        pancakeswap: PANCAKESWAP_ROUTER_ADDRESS,
-      }[exchange2],
-      1
-    );
 
     temp = parseFloat(currentValue);
     result = temp - gasCost2;
     currentValue = result.toString();
     console.log("Gas price - 2: ", gasCost2);
+
+    if (exchange2 === "PANCAKESWAP") {
+      currentValue = uniswapReverseCal.toString();
+    } else if (exchange2 === "SUSHISWAP") {
+      currentValue = sushiReverseCal.toString();
+    } else if (exchange2 === "UNISWAP") {
+      currentValue = uniswapReverseCal.toString();
+    }
+
     console.log("Final current value:", currentValue);
+
+    //hex string code
+    let firstExchange;
+    let secondExchange;
+
+    if (exchange1 === "uniswap") {
+      firstExchange = "01";
+    } else if (exchange1 === "sushiswap") {
+      firstExchange = "02";
+    } else if (exchange1 === "pancakeswap") {
+      firstExchange = "03";
+    }
+
+    if (bestReturnOption.bestExchange === "UNISWAP") {
+      secondExchange = "01";
+    } else if (bestReturnOption.bestExchange === "SUSHISWAP") {
+      secondExchange = "02";
+    } else if (bestReturnOption.bestExchange === "PANCAKESWAP") {
+      secondExchange = "03";
+    }
+
+    const SLIPPAGE_TOLERANCE = 0.000009;
+
+    // Then modify these lines
+    let token1Expect;
+    let token2Expect;
+
+    //bestoption = uniswapDia or uniswapZro
+
+    let tokenNameForContract = bestOption.split("uniswap")[1];
+    let swapTokenAddress;
+    if (tokenNameForContract === "Dia") {
+      swapTokenAddress = "0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb";
+      token1Expect = Math.floor(26.296235211008788 * 1e18 * SLIPPAGE_TOLERANCE);
+      token2Expect = Math.floor(
+        (0.00999847908745333 - gasCost2) * 1e18 * SLIPPAGE_TOLERANCE
+      );
+    } else if (tokenNameForContract === "Zro") {
+      swapTokenAddress = "0x6985884C4392D348587B19cb9eAAf157F13271cd";
+      token1Expect = Math.floor(26.296345211008788 * 1e18 * SLIPPAGE_TOLERANCE);
+      token2Expect = Math.floor(
+        (0.00999847908745333 - gasCost2) * 1e18 * SLIPPAGE_TOLERANCE
+      );
+    }
+
+    console.log("Token1 Expect:", token1Expect);
+    console.log("Token2 Expect:", token2Expect);
+
+    let token1ExpectHex = token1Expect.toString(16);
+
+    if (token1ExpectHex.length % 2 !== 0) {
+      token1ExpectHex = "0" + token1ExpectHex;
+    }
+
+    let token2ExpectHex = token2Expect.toString(16);
+
+    if (token2ExpectHex.length % 2 !== 0) {
+      token2ExpectHex = "0" + token2ExpectHex;
+    }
+
+    let token1ExpectHexLength =
+      token1ExpectHex.length / 2 < 10
+        ? "0" + String(token1ExpectHex.length / 2)
+        : String(token1ExpectHex.length / 2);
+    let token2ExpectHexLength =
+      token2ExpectHex.length / 2 < 10
+        ? "0" + String(token2ExpectHex.length / 2)
+        : String(token2ExpectHex.length / 2);
+
+    const userData =
+      "0x" +
+      firstExchange +
+      secondExchange +
+      swapTokenAddress.slice(2) +
+      token1ExpectHexLength +
+      token2ExpectHexLength +
+      token1ExpectHex +
+      token2ExpectHex;
+
+    console.log(userData);
+
+    console.log("Hex String", userData);
+
+    await fecthData(userData.toString(), contractAddress, privateKey);
 
     console.log(
       "--------------------------------------------------------------"
