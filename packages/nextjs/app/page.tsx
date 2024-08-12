@@ -54,7 +54,7 @@ const Home: NextPage = () => {
                 <div className="w-full lg:w-1/3 border border-gray-200 bg-white px-4 py-6 text-black rounded-xl hover:border-2 hover:border-blue-600 hover:shadow-blue-500/50 transition-all">
                   <h2 className="p-4 text-3xl sm:text-4xl font-bold">Lucrative Opportunities</h2>
                   <p className="text-base sm:text-lg md:text-xl text-slate-800">
-                    Flash Loan Arbitrage bots capitalize on price differences across decentralized platforms, offering a
+                    Flash Loan Arbitrage bots capitalize on price differences across decentralized exchanges, offering a
                     high potential for profit without substantial capital investment.
                   </p>
                 </div>
@@ -68,7 +68,7 @@ const Home: NextPage = () => {
                 <div className="w-full lg:w-1/3 border border-gray-200 bg-white px-4 py-6 text-black rounded-xl hover:border-2 hover:border-blue-600 hover:shadow-blue-500/50 transition-all">
                   <h2 className="p-4 text-3xl sm:text-4xl font-bold">Automated Precision</h2>
                   <p className="text-base sm:text-lg md:text-xl text-slate-800">
-                    Using bots automates the process, allowing for the swift execution of arbitrage strategies with
+                    Using bot, automates the process, allowing for the swift execution of arbitrage strategies with
                     minimal human involvement, and provides adaptability to changing market conditions.
                   </p>
                 </div>
