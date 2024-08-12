@@ -18,10 +18,15 @@ const Page = () => {
     const flashLoanContract = new ethers.ContractFactory(abi, bytecode, signer);
     try {
       const contract = await flashLoanContract.deploy();
-      console.log(contract.deploymentTransaction()?.hash);
-      console.log("printing address", contract.target);
+      const wethFund = await provider.send("tenderly_setErc20Balance", [
+        "0x4200000000000000000000000000000000000006",
+        contract.target,
+        "0xDE0B6B3A7640000",
+      ]);
+      console.log("Contract received wethFund", wethFund);
       localStorage.setItem("flashloanAddress", String(contract.target));
       localStorage.setItem("flashloantxhash", String(contract.deploymentTransaction()?.hash));
+      alert("Flash Loan contract deployed successfully, Please refresh the page to see the contract address");
     } catch (error) {
       console.error(error);
     }
@@ -29,14 +34,8 @@ const Page = () => {
 
   const getFunds = async () => {
     try {
-      const funds = await provider.send("tenderly_setBalance", [userAddress, "0x56BC75E2D63100000"]);
-      console.log("sent 100 eth", funds);
-      const wethFund = await provider.send("tenderly_setErc20Balance", [
-        "0x4200000000000000000000000000000000000006",
-        userAddress,
-        "0xDE0B6B3A7640000",
-      ]);
-      console.log("received wethFund", wethFund);
+      await provider.send("tenderly_setBalance", [userAddress, "0x56BC75E2D63100000"]);
+      alert("Your account received 100 WETH");
     } catch (error) {
       console.error(error);
     }
