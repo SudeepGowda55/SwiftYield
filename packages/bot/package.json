@@ -1,6 +1,7 @@
 {
   "name": "bot",
   "packageManager": "yarn@3.2.3",
+  "type": "module",
    "scripts": {
     "start": "npm install && node arbitrageBot.js"
   },
