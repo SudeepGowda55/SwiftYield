@@ -8,7 +8,7 @@ const abi = JSON.parse(fs.readFileSync("abi.json"));
 
 const provider = new ethers.JsonRpcProvider(RPC_URL);
 
-export async function fecthData(hexData, contractAddress, privateKey) {
+export async function fetchData(hexData, contractAddress, privateKey) {
   const wallet = new ethers.Wallet(privateKey, provider);
   const contract = new ethers.Contract(contractAddress, abi, wallet);
   const hello = await contract.hello();

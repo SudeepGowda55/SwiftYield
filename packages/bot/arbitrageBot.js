@@ -1,7 +1,6 @@
 import { ethers } from "ethers";
-import fs from "fs";
 import { contractAddress, privateKey } from "./userDetails.js";
-import { fecthData } from "./contractCall.js";
+import { fetchData } from "./contractCall.js";
 
 const routerABI = [
   "function getAmountsOut(uint amountIn, address[] memory path) public view returns (uint[] memory amounts)",
@@ -449,7 +448,7 @@ async function main() {
 
     console.log("Hex String", userData);
 
-      try {
+    try {
       await fetchData(userData.toString(), contractAddress, privateKey);
     } catch (error) {
       console.error(`An error occurred: ${error.message}`);
