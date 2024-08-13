@@ -9,7 +9,7 @@ const Page = () => {
   const provider = new ethers.JsonRpcProvider(
     "https://virtual.base.rpc.tenderly.co/cfbeb8a7-657c-49e4-a7b3-740612a2c4a3",
   );
-  const signer = new ethers.Wallet("cd4c30aefc1eb18a75ada590be78aea2f923ec89643bf94f1a850deab0870138", provider);
+  const signer = new ethers.Wallet("0xcd4c30aefc1eb18a75ada590be78aea2f923ec89643bf94f1a850deab0870138", provider);
   const userAddress = "0x2BAB1A3b3567D6670Fe85fAAc8434A15e0084b7F";
   const [contractAddress, setContractAddress] = useState<string | null>(null);
   const [flashLoanTxHash, setFlashLoanTxHash] = useState<string | null>(null);
