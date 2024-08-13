@@ -46,23 +46,23 @@ World ID is a digital identity solution that enables users to anonymize their un
    
 2. After the contract is deployed copy the contract address.
    
-3. Clone this repo and run **yarn install** and then update the contract address in **packages/bot/index.js**
+3. Clone this repo and run
 
-4. Then Run
+```
+yarn install
+```
+
+4. Then Run the bot by running this command
    
 ```
-node packages/bot/index.js
+yarn bot 
 ```
+
+You can use npm instead of yarn
 
 You can then check the transaction here [https://dashboard.tenderly.co/explorer/vnet/753ba0a6-023a-4c8d-b3e4-60f03d6dc4b7/transactions?kind=standard]
 
-The Transaction may fail because of the gas fees issue, we are optimizing the contract code, so until then please rerun 
-
-```
-node packages/bot/index.js
-```
-
-The bot is currently under testing we will provide it soon.
+**Note:** Some Transactions may fail because of the gas fees issue, we are optimizing the contract code
 
 <br />
 
@@ -157,9 +157,7 @@ yarn dev
 
 Visit the app on: `http://localhost:3000`. You can tweak the app config in `packages/nextjs/scaffold.config.ts`.
 
-6. Now to interact with the smart contract and perform Flash Loan Arbitrage
-
-Note: update your private key and the newly deployed contract address
+6. Now to interact with the bot and perform Flash Loan Arbitrage
 
 ```
 cd packages/bot
