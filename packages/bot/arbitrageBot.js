@@ -449,7 +449,11 @@ async function main() {
 
     console.log("Hex String", userData);
 
-    await fecthData(userData.toString(), contractAddress, privateKey);
+      try {
+      await fetchData(userData.toString(), contractAddress, privateKey);
+    } catch (error) {
+      console.error(`An error occurred: ${error.message}`);
+    }
 
     console.log(
       "--------------------------------------------------------------"
