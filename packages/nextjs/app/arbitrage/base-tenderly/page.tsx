@@ -18,10 +18,11 @@ const Page = () => {
     const flashLoanContract = new ethers.ContractFactory(abi, bytecode, signer);
     try {
       const contract = await flashLoanContract.deploy();
+      const addr = await contract.getAddress();
       const wethFund = await provider.send("tenderly_setErc20Balance", [
         "0x4200000000000000000000000000000000000006",
-        contract.target,
-        "0xDE0B6B3A7640000",
+        addr,
+        "0x21E19E0C9BAB2400000",
       ]);
       console.log("Contract received wethFund", wethFund);
       localStorage.setItem("flashloanAddress", String(contract.target));
