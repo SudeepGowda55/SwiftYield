@@ -1,7 +1,7 @@
 # Swift Yield
 
 <h4 align="center">
-  <a href="https://swiftyield.vercel.app/">Swift Yield Website</a>
+  <a href="https://swiftyield.vercel.app/">Click here to Swift Yield Website</a>
 </h4>
 
 <br />
