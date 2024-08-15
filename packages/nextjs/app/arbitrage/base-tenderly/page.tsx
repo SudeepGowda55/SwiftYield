@@ -91,11 +91,7 @@ const Page = () => {
       </div>
 
       {/* Additional Content Centered */}
-      <div className="mt-8 text-center max-w-2xl">
-        <p>
-          After the contract is deployed, you need to run this bot script and provide it with the Flash Loan contract
-          address and a private key that has sufficient ETH to fund transaction gas fees.
-        </p>
+      <div className="mt-8 text-center max-w-2xl font-bold">
         {contractAddress && (
           <p className="mt-4">
             Your Flash Loan contract address is deployed at{" "}
@@ -108,6 +104,25 @@ const Page = () => {
             </Link>
           </p>
         )}
+        <p>
+          {" "}
+          After the contract is deployed, you need to clone this repo{" "}
+          <b className="text-blue-500 underline">
+            {" "}
+            <Link href={""}>Swift Yield Repo</Link>{" "}
+          </b>{" "}
+        </p>
+        <p>
+          {" "}
+          Then follow this{" "}
+          <b className="text-blue-500 underline">
+            {" "}
+            <Link href={"https://github.com/SudeepGowda55/SwiftYield?tab=readme-ov-file#for-testing-the-app"}>
+              Instructions for testing the app
+            </Link>{" "}
+          </b>{" "}
+          and provide it with the newly deployed Flash Loan contract Address{" "}
+        </p>
       </div>
     </div>
   );
