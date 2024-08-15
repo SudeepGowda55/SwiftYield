@@ -109,7 +109,12 @@ const Page = () => {
           After the contract is deployed, you need to clone this repo{" "}
           <b className="text-blue-500 underline">
             {" "}
-            <Link href={""}>Swift Yield Repo</Link>{" "}
+            <Link
+              href={"https://github.com/SudeepGowda55/SwiftYield?tab=readme-ov-file#for-testing-the-app"}
+              target="_blank"
+            >
+              Swift Yield Repo
+            </Link>{" "}
           </b>{" "}
         </p>
         <p>
@@ -117,7 +122,10 @@ const Page = () => {
           Then follow this{" "}
           <b className="text-blue-500 underline">
             {" "}
-            <Link href={"https://github.com/SudeepGowda55/SwiftYield?tab=readme-ov-file#for-testing-the-app"}>
+            <Link
+              href={"https://github.com/SudeepGowda55/SwiftYield?tab=readme-ov-file#for-testing-the-app"}
+              target="_blank"
+            >
               Instructions for testing the app
             </Link>{" "}
           </b>{" "}
