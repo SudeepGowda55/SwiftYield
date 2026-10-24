@@ -4,54 +4,55 @@ import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { loopStore } from "~~/components/hero/LoopScene";
+import { Oscilloscope } from "~~/components/hero/Oscilloscope";
+import { storm } from "~~/components/hero/StormScene";
+import { Flicker } from "~~/components/motion/Flicker";
 import { Magnetic } from "~~/components/motion/Magnetic";
-import { Marquee } from "~~/components/motion/Marquee";
 import { TransitionLink } from "~~/components/motion/PageTransition";
 import { Reveal } from "~~/components/motion/Reveal";
-import { SplitHeading } from "~~/components/motion/SplitHeading";
 
 gsap.registerPlugin(ScrollTrigger);
 
 // start fetching the 3D chunk in parallel with hydration
-const sceneImport = typeof window !== "undefined" ? import("~~/components/hero/LoopScene") : null;
-const LoopScene = dynamic(() => sceneImport ?? import("~~/components/hero/LoopScene"), { ssr: false });
+const sceneImport = typeof window !== "undefined" ? import("~~/components/hero/StormScene") : null;
+const StormScene = dynamic(() => sceneImport ?? import("~~/components/hero/StormScene"), { ssr: false });
 
-// One chapter per real state of FlashLoan.sol: borrow, swap on DEX A, swap on DEX B, repay. No filler.
+// Three real phases of one FlashLoan.sol transaction. Supporting detail lives in the sections below.
 const CHAPTERS = [
   {
-    n: "01",
-    tag: "Borrow",
-    color: "var(--loan)",
-    title: "Borrow WETH from the Balancer Vault.",
-    body: "makeFlashLoan() asks Balancer for 1 WETH. Balancer charges no flash-loan fee, and no collateral is needed: if the loop can't repay, the whole transaction reverts.",
+    title: "Borrow the charge",
+    body: "makeFlashLoan() pulls 1 WETH out of the Balancer Vault. No collateral and no flash-loan fee: Balancer only asks for it back before the block ends.",
+    status: "Loan outstanding · 1 WETH",
+    color: "var(--debt)",
   },
   {
-    n: "02",
-    tag: "Buy low",
+    title: "Strike both pools",
+    body: "swap() buys DIA or ZRO on the cheaper DEX and sells it straight back to WETH on the dearer one, guarded by minimum-out amounts.",
+    status: "Two swaps · same transaction",
     color: "var(--ink)",
-    title: "Swap into the token where it's cheapest.",
-    body: "The bot quotes DIA and ZRO on Uniswap, SushiSwap and PancakeSwap, then the contract buys on the DEX with the lowest price.",
   },
   {
-    n: "03",
-    tag: "Sell high",
-    color: "var(--ink)",
-    title: "Sell it back where it's dearer.",
-    body: "Still inside the same block, the contract sells the token back to WETH on the DEX quoting more, guarded by minimum-out amounts.",
+    title: "Ground it. Keep the spark.",
+    body: "receiveFlashLoan() repays the vault in full. If it can't, the whole strike reverts. Whatever WETH is left over stays in your contract.",
+    status: "Repaid · spread kept",
+    color: "var(--spark)",
   },
-  {
-    n: "04",
-    tag: "Repay",
-    color: "var(--profit)",
-    title: "Repay the vault. Keep the spread.",
-    body: "receiveFlashLoan() returns the borrowed amount to the vault. Whatever is left over stays in your contract. You only pay gas.",
-  },
+];
+
+const TRACE = [
+  { d: 0, fn: "FlashLoan.makeFlashLoan([WETH], [1e18], userData)", note: "bot fires the strike" },
+  { d: 1, fn: "BalancerVault.flashLoan(this, tokens, amounts, userData)", note: "+1 WETH lent" },
+  { d: 2, fn: "FlashLoan.receiveFlashLoan(tokens, amounts, fees, userData)", note: "only the vault may call" },
+  { d: 3, fn: "FlashLoan.swap(userData)", note: "decode route bytes" },
+  { d: 4, fn: "RouterA.swapExactTokensForTokens(WETH → DIA)", note: "buy low" },
+  { d: 4, fn: "RouterB.swapExactTokensForTokens(DIA → WETH)", note: "sell high" },
+  { d: 3, fn: "WETH.transfer(vault, amount + fee)", note: "fee is 0 on Balancer" },
+  { d: 0, fn: "← transaction ends", note: "spread stays in FlashLoan" },
 ];
 
 const STATS = [
   { value: 0, suffix: "%", label: "Balancer flash-loan fee" },
-  { value: 1, suffix: "", label: "transaction per arbitrage" },
+  { value: 1, suffix: "", label: "Transaction per arbitrage" },
   { value: 3, suffix: "", label: "DEXs wired into the contract" },
   { value: 643, suffix: "", label: "Uniswap V2 forks it could reach" },
 ];
@@ -76,96 +77,150 @@ const Story = () => {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    loopStore.p = 0;
+    storm.p = 0;
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         defaults: { ease: "none" },
         scrollTrigger: { trigger: section.current, start: "top top", end: "bottom bottom", scrub: 0.6 },
       });
-      tl.to(loopStore, { p: 4, duration: 4 }, 0);
-      tl.to(".hero-copy", { opacity: 0, y: -60, duration: 0.35 }, 0.05);
-      tl.to(".rail-fill", { scaleY: 1, duration: 4 }, 0);
+      tl.to(storm, { p: 3, duration: 3 }, 0);
+      tl.to(".hero-copy", { opacity: 0, y: -40, duration: 0.25 }, 0.02);
+      tl.fromTo(".fuse", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 0.1);
       CHAPTERS.forEach((_, i) => {
-        const el = `.chapter-${i}`;
-        tl.fromTo(el, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.3 }, i + 0.35);
-        tl.to(`.tick-${i}`, { backgroundColor: "#0e0e10", color: "#f7f5ef", duration: 0.1 }, i + 0.35);
-        if (i < CHAPTERS.length - 1) tl.to(el, { opacity: 0, y: -50, duration: 0.3 }, i + 1.1);
+        tl.fromTo(`.fuse-fill-${i}`, { scaleX: 0 }, { scaleX: 1, duration: 1 }, i);
+        tl.fromTo(`.chapter-${i}`, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.2 }, i + 0.15);
+        if (i < CHAPTERS.length - 1) tl.to(`.chapter-${i}`, { opacity: 0, y: -30, duration: 0.2 }, i + 0.85);
       });
     }, section);
     return () => {
       ctx.revert();
-      loopStore.p = 0;
+      storm.p = 0;
     };
   }, []);
 
   return (
-    <section ref={section} className="relative" style={{ height: "520vh" }} aria-label="How one arbitrage loop runs">
-      <div className="sticky top-16 h-[calc(100svh-4rem)] overflow-hidden">
+    <section
+      ref={section}
+      className="relative"
+      style={{ height: "420vh" }}
+      aria-label="One flash loan as one lightning strike"
+    >
+      <div className="sticky top-16 h-[calc(100svh-4rem)] overflow-hidden lg:top-0 lg:h-[100svh]">
         <div className="absolute inset-0 transition-opacity duration-1000" style={{ opacity: ready ? 1 : 0 }}>
-          <LoopScene onReady={() => setReady(true)} />
+          <StormScene onReady={() => setReady(true)} />
         </div>
 
-        <div className="wrap relative h-full pointer-events-none">
-          {/* chapter 0: hero */}
-          <div className="absolute inset-x-4 sm:inset-x-8 top-[6%] lg:top-1/2 lg:-translate-y-1/2 max-w-2xl">
-            <div className="hero-copy pointer-events-auto">
-              <span className="chip mb-6">
-                <span className="h-2 w-2 rounded-full bg-[var(--profit)] animate-pulse" /> Live on Base · Tenderly vnet
-              </span>
-              <SplitHeading
-                as="h1"
-                text="Borrow. Arbitrage. Repay. One block."
-                accent={["One"]}
-                className="font-display text-[11vw] sm:text-6xl lg:text-7xl font-bold leading-[0.95]"
-              />
-              <p className="max-w-md text-base sm:text-lg text-[var(--ink-2)]">
-                SwiftYield is a no-code flash-loan arbitrage bot. It borrows from Balancer, trades the price gap between
-                DEXs and repays the loan in the same transaction.
+        {/* diagonal split: "One block." top-left, "One strike." bottom-right, the bolt between them */}
+        <div className="pointer-events-none relative h-full px-4 pt-6 sm:px-10 md:pr-24 lg:pt-10">
+          <h1 className="sr-only">One block. One strike.</h1>
+          <div className="hero-copy flex h-full flex-col">
+            <Flicker
+              as="div"
+              text="One block."
+              className="font-display text-[12vw] font-extrabold leading-[0.9] sm:text-8xl lg:text-[7.5rem]"
+            />
+            <Flicker
+              as="div"
+              text="One strike."
+              hot={["strike."]}
+              delay={0.25}
+              className="font-display text-right text-[12vw] font-extrabold leading-[0.9] sm:text-8xl lg:absolute lg:bottom-10 lg:right-28 lg:text-[7.5rem]"
+            />
+            <div
+              className="pointer-events-auto mt-5 max-w-sm lg:absolute lg:left-10 lg:top-[34%] lg:mt-0"
+              style={{ textShadow: "0 1px 12px rgba(255,138,61,0.95)" }}
+            >
+              <p className="!mt-0 text-base font-medium text-[var(--ink-dim)] sm:text-lg">
+                SwiftYield is a no-code flash-loan arbitrage bot on Base. It borrows from Balancer, hits the price gap
+                between two DEXs and repays the loan, all inside a single transaction.
               </p>
-              <div className="mt-8 flex flex-wrap items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 <Magnetic>
-                  <TransitionLink href="/authenticate" className="cta">
+                  <TransitionLink href="/authenticate" className="strike-btn">
                     Start arbitrage <span aria-hidden>→</span>
                   </TransitionLink>
                 </Magnetic>
                 <Magnetic>
-                  <TransitionLink href="/how-it-works" className="cta cta-volt">
+                  <TransitionLink href="/how-it-works" className="strike-btn-ghost">
                     See the mechanism
                   </TransitionLink>
                 </Magnetic>
               </div>
-              <p className="label mt-10 hidden sm:block">↓ Scroll to run one loop · illustration, not live trades</p>
             </div>
           </div>
 
-          {/* chapters 1-4 */}
           {CHAPTERS.map((c, i) => (
-            <div key={c.n} className="absolute inset-x-4 sm:inset-x-8 top-[4%] lg:top-1/2 lg:-translate-y-1/2 max-w-md">
-              <div className={`chapter-${i} ticket opacity-0`}>
-                <div className="flex items-center justify-between">
-                  <span className="label">Step {c.n} / 04</span>
-                  <span className="chip" style={{ color: c.color }}>
-                    {c.tag}
-                  </span>
-                </div>
-                <h2 className="font-display mt-5 text-2xl sm:text-4xl font-bold leading-tight">{c.title}</h2>
-                <p className="text-[var(--ink-2)]">{c.body}</p>
+            <div
+              key={c.title}
+              className={`chapter-${i} absolute left-4 right-4 top-6 max-w-xl opacity-0 sm:left-10 lg:top-[22%]`}
+              style={{ textShadow: "0 1px 14px rgba(255,138,61,0.95)" }}
+            >
+              <div className="text-sm font-bold" style={{ color: c.color }}>
+                {c.status}
               </div>
+              <h2 className="font-display mt-2 text-5xl font-extrabold leading-[0.9] sm:text-7xl">{c.title}</h2>
+              <p className="max-w-md font-medium text-[var(--ink-dim)]">{c.body}</p>
             </div>
           ))}
 
-          {/* progress rail */}
-          <div className="absolute right-4 sm:right-8 bottom-8 lg:top-1/2 lg:bottom-auto lg:-translate-y-1/2 flex lg:flex-col items-center gap-3">
-            <div className="relative hidden lg:block h-40 w-px bg-[var(--line)]">
-              <div className="rail-fill absolute inset-0 origin-top scale-y-0 bg-[var(--ink)]" />
-            </div>
+          {/* three-segment fuse: burns along with the scroll */}
+          <div className="fuse absolute left-4 top-2 flex w-60 gap-2 opacity-0 sm:left-10 lg:top-10" aria-hidden>
             {CHAPTERS.map((c, i) => (
-              <span key={c.n} className={`tick-${i} chip !px-2`} aria-hidden>
-                {c.n}
-              </span>
+              <div key={c.title} className="h-1.5 flex-1 bg-[var(--wire)]">
+                <div className={`fuse-fill-${i} h-full origin-left`} style={{ background: c.color }} />
+              </div>
             ))}
           </div>
         </div>
+
+        <Oscilloscope />
+      </div>
+    </section>
+  );
+};
+
+const Trace = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const rows = gsap.utils.toArray<HTMLElement>(".trace-row");
+      const tl = gsap.timeline({
+        defaults: { ease: "none" },
+        scrollTrigger: { trigger: ".trace-list", start: "top 70%", end: "bottom 45%", scrub: 0.4 },
+      });
+      tl.fromTo(".trace-current", { scaleY: 0 }, { scaleY: 1, duration: rows.length }, 0);
+      tl.fromTo(".trace-spark", { top: "0%" }, { top: "100%", duration: rows.length }, 0);
+      rows.forEach((r, i) => tl.fromTo(r, { opacity: 0.22 }, { opacity: 1, duration: 0.3 }, i));
+    }, ref);
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section ref={ref} className="page grid gap-12 py-24 sm:py-32 lg:grid-cols-[0.8fr_1.2fr]">
+      <div>
+        <Flicker text="Inside one strike" className="font-display text-5xl font-extrabold leading-[0.9] sm:text-7xl" />
+        <p className="max-w-sm text-[var(--ink-dim)]">
+          The real call trace of one arbitrage. Scroll and the current runs through it, top to bottom, inside a single
+          Base transaction.
+        </p>
+      </div>
+      <div className="trace-list relative pl-8">
+        <div className="absolute left-2 top-0 h-full w-px bg-[var(--wire)]" />
+        <div className="trace-current absolute left-2 top-0 h-full w-px origin-top bg-[var(--ink)]" />
+        <div className="trace-spark absolute left-2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[var(--spark)] shadow-[0_0_18px_var(--spark)]" />
+        <ol className="space-y-3">
+          {TRACE.map((t, i) => (
+            <li
+              key={i}
+              className="trace-row flex flex-col gap-1 border-b wire pb-3 sm:flex-row sm:items-baseline sm:justify-between"
+            >
+              <span className="font-data text-[13px] sm:text-sm" style={{ paddingLeft: `${t.d * 14}px` }}>
+                {t.fn}
+              </span>
+              <span className="shrink-0 text-sm font-bold">{t.note}</span>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );
@@ -177,114 +232,87 @@ const Stats = () => {
     const ctx = gsap.context(() => {
       gsap.utils.toArray<HTMLElement>(".stat").forEach(el => {
         const num = el.querySelector(".stat-num")!;
-        const bar = el.querySelector(".stat-bar")!;
-        const target = Number(el.dataset.value);
         const o = { v: 0 };
-        gsap
-          .timeline({ scrollTrigger: { trigger: el, start: "top 90%", end: "top 45%", scrub: 0.5 } })
-          .to(o, { v: target, ease: "none", onUpdate: () => void (num.textContent = String(Math.round(o.v))) }, 0)
-          .fromTo(bar, { scaleX: 0 }, { scaleX: 1, ease: "none" }, 0);
+        gsap.to(o, {
+          v: Number(el.dataset.value),
+          ease: "none",
+          onUpdate: () => void (num.textContent = String(Math.round(o.v))),
+          scrollTrigger: { trigger: el, start: "top 92%", end: "top 55%", scrub: 0.5 },
+        });
       });
     }, ref);
     return () => ctx.revert();
   }, []);
 
   return (
-    <div ref={ref} className="grid grid-cols-2 lg:grid-cols-4 border-t border-l rule">
-      {STATS.map(s => (
-        <div key={s.label} data-value={s.value} className="stat border-b border-r rule p-6 sm:p-8">
-          <div className="font-display text-5xl sm:text-7xl font-bold">
+    <div ref={ref} className="grid grid-cols-2 border-y wire lg:grid-cols-4">
+      {STATS.map((s, i) => (
+        <div
+          key={s.label}
+          data-value={s.value}
+          className={`stat wire px-4 py-10 sm:px-10 ${i % 2 ? "border-l" : ""} ${i ? "lg:border-l" : ""} ${
+            i > 1 ? "border-t lg:border-t-0" : ""
+          }`}
+        >
+          <div className="font-display text-5xl font-extrabold leading-none sm:text-7xl">
             <span className="stat-num">0</span>
-            {s.suffix}
+            <span className="text-[var(--spark)]">{s.suffix}</span>
           </div>
-          <div className="stat-bar mt-4 h-1.5 origin-left bg-[var(--volt)] outline outline-1 outline-[var(--ink)]" />
-          <p className="label !mt-4">{s.label}</p>
+          <p className="!mb-0 text-[var(--ink-dim)]">{s.label}</p>
         </div>
       ))}
     </div>
   );
 };
 
-const Home = () => {
-  return (
-    <>
-      <Story />
+const Home = () => (
+  <>
+    <Story />
+    <Trace />
+    <Stats />
 
-      <Marquee
-        items={["Balancer Vault", "Uniswap V2", "SushiSwap V2", "PancakeSwap V2", "WETH", "DIA", "ZRO", "Base Mainnet"]}
-      />
+    <section className="page py-24 sm:py-32">
+      <Flicker text="Why borrow the storm" className="font-display text-5xl font-extrabold leading-[0.9] sm:text-7xl" />
+      <Reveal className="mt-12 grid gap-4 md:grid-cols-3">
+        {ADVANTAGES.map((a, i) => (
+          <article key={a.title} data-cursor className="plate transition-colors hover:bg-[var(--field-hi)]">
+            <span className="font-display text-5xl font-extrabold text-[var(--spark)]">{i + 1}</span>
+            <h3 className="font-display mt-6 text-2xl sm:text-3xl font-extrabold leading-none">{a.title}</h3>
+            <p className="text-[var(--ink-dim)]">{a.body}</p>
+          </article>
+        ))}
+      </Reveal>
+    </section>
 
-      <section className="wrap py-24 sm:py-32">
-        <span className="label">By the contract</span>
-        <SplitHeading
-          text="Zero fee capital. One atomic shot."
-          accent={["Zero"]}
-          className="font-display mt-4 max-w-4xl text-4xl sm:text-6xl font-bold"
+    <section style={{ background: "var(--ink)", color: "var(--field)" }}>
+      <div className="page grid gap-10 py-20 lg:grid-cols-[1fr_1.1fr] lg:items-end">
+        <Flicker
+          text="Verify. Deploy. Let it strike."
+          className="font-display text-5xl font-extrabold leading-[0.9] sm:text-7xl"
         />
-        <div className="mt-14">
-          <Stats />
-        </div>
-      </section>
-
-      <section className="wrap pb-24 sm:pb-32">
-        <span className="label">Why flash loans</span>
-        <SplitHeading
-          text="Advantages of the flash loan"
-          className="font-display mt-4 text-4xl sm:text-6xl font-bold"
-        />
-        <Reveal className="mt-12 grid gap-4 md:grid-cols-3">
-          {ADVANTAGES.map((a, i) => (
-            <article
-              key={a.title}
-              data-cursor
-              className="ticket group transition-transform duration-500 hover:-translate-y-2 hover:bg-[var(--volt)]"
-            >
-              <span className="label">0{i + 1}</span>
-              <h3 className="font-display mt-8 text-2xl font-bold">{a.title}</h3>
-              <p className="text-[var(--ink-2)] group-hover:text-[var(--ink)]">{a.body}</p>
-            </article>
+        <Reveal className="grid gap-px bg-[var(--field)] sm:grid-cols-3">
+          {[
+            ["Verify", "Prove you're human with World ID."],
+            ["Deploy", "Deploy your own FlashLoan contract on the Tenderly Base vnet."],
+            ["Run", "Clone the repo, paste the contract address and run yarn bot."],
+          ].map(([k, v], i) => (
+            <div key={k} className="bg-[var(--ink)] p-5">
+              <div className="font-display text-5xl font-extrabold">{i + 1}</div>
+              <div className="font-display mt-2 text-2xl font-extrabold">{k}</div>
+              <p className="!mb-0 text-sm text-[var(--cream)]">{v}</p>
+            </div>
           ))}
         </Reveal>
-      </section>
-
-      <section className="border-y rule" style={{ background: "var(--volt)" }}>
-        <div className="wrap grid gap-10 py-20 lg:grid-cols-2 lg:items-end">
-          <div>
-            <span className="label !text-[var(--ink)]">Run it yourself</span>
-            <SplitHeading
-              text="Verify, deploy, then let the bot hunt."
-              className="font-display mt-4 text-4xl sm:text-6xl font-bold"
-            />
-          </div>
-          <Reveal className="space-y-3">
-            {[
-              ["Verify", "Prove you're human with World ID."],
-              ["Deploy", "Deploy your own FlashLoan contract on the Tenderly Base vnet."],
-              ["Run", "Clone the repo, paste the contract address and run yarn bot."],
-            ].map(([k, v], i) => (
-              <div
-                key={k}
-                className="flex items-start gap-4 rounded-2xl border border-[var(--ink)] bg-[var(--paper)] p-4"
-              >
-                <span className="font-display text-2xl font-bold">0{i + 1}</span>
-                <div>
-                  <div className="font-mono text-xs uppercase tracking-[0.14em]">{k}</div>
-                  <div className="text-[var(--ink-2)]">{v}</div>
-                </div>
-              </div>
-            ))}
-            <div className="pt-4">
-              <Magnetic>
-                <TransitionLink href="/authenticate" className="cta">
-                  Start arbitrage <span aria-hidden>→</span>
-                </TransitionLink>
-              </Magnetic>
-            </div>
-          </Reveal>
+        <div className="lg:col-start-2">
+          <Magnetic>
+            <TransitionLink href="/authenticate" className="strike-btn !bg-[var(--field)] !text-[var(--ink)]">
+              Start arbitrage <span aria-hidden>→</span>
+            </TransitionLink>
+          </Magnetic>
         </div>
-      </section>
-    </>
-  );
-};
+      </div>
+    </section>
+  </>
+);
 
 export default Home;

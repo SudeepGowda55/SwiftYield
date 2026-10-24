@@ -1,5 +1,4 @@
 import { hardhat } from "viem/chains";
-import { CurrencyDollarIcon } from "@heroicons/react/24/outline";
 import { Bolt } from "~~/components/Header";
 import { TransitionLink } from "~~/components/motion/PageTransition";
 import { Faucet } from "~~/components/scaffold-eth";
@@ -16,70 +15,44 @@ export const Footer = () => {
   const isLocalNetwork = targetNetwork.id === hardhat.id;
 
   return (
-    <footer className="border-t rule" style={{ background: "var(--ink)", color: "var(--paper)" }}>
-      <div className="wrap grid gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr]">
+    <footer className="border-t wire bg-[var(--field-deep)]">
+      <div className="page grid gap-10 py-14 md:grid-cols-[1.5fr_1fr_1fr]">
         <div>
-          <div className="flex items-center gap-2">
-            <Bolt className="h-8 w-8" />
-            <span className="font-display text-2xl font-bold">SwiftYield</span>
+          <div className="flex items-center gap-3">
+            <Bolt className="h-10 w-10" />
+            <span className="font-display text-4xl font-extrabold">SwiftYield</span>
           </div>
-          <p className="max-w-sm text-sm opacity-70">{SITE.description}</p>
-          {nativeCurrencyPrice > 0 && (
-            <span className="chip !bg-transparent !text-[var(--paper)] !border-white/20">
-              <CurrencyDollarIcon className="h-4 w-4" /> ETH {nativeCurrencyPrice}
-            </span>
-          )}
+          <p className="max-w-sm text-[var(--ink-dim)]">{SITE.description}</p>
+          {nativeCurrencyPrice > 0 && <span className="tag">ETH ${nativeCurrencyPrice}</span>}
         </div>
-        <ul className="space-y-2 font-mono text-xs uppercase tracking-[0.14em]">
+        <ul className="space-y-1">
           {NAV.map(n => (
             <li key={n.href}>
-              <TransitionLink href={n.href} className="opacity-70 hover:opacity-100 hover:text-[var(--volt)]">
+              <TransitionLink href={n.href} className="font-display text-2xl font-extrabold hover:text-[var(--spark)]">
                 {n.label}
               </TransitionLink>
             </li>
           ))}
         </ul>
-        <ul className="space-y-2 font-mono text-xs uppercase tracking-[0.14em]">
-          <li>
-            <a
-              href={SITE.repo}
-              target="_blank"
-              rel="noreferrer"
-              className="opacity-70 hover:opacity-100 hover:text-[var(--volt)]"
-            >
-              GitHub ↗
-            </a>
-          </li>
-          <li>
-            <a
-              href={SITE.explorer}
-              target="_blank"
-              rel="noreferrer"
-              className="opacity-70 hover:opacity-100 hover:text-[var(--volt)]"
-            >
-              Tenderly explorer ↗
-            </a>
-          </li>
-          <li>
-            <a
-              href={`${SITE.repo}/issues`}
-              target="_blank"
-              rel="noreferrer"
-              className="opacity-70 hover:opacity-100 hover:text-[var(--volt)]"
-            >
-              Support ↗
-            </a>
-          </li>
+        <ul className="space-y-2">
+          {[
+            ["GitHub", SITE.repo],
+            ["Tenderly explorer", SITE.explorer],
+            ["Support", `${SITE.repo}/issues`],
+          ].map(([label, href]) => (
+            <li key={label}>
+              <a href={href} target="_blank" rel="noreferrer" className="text-[var(--ink-dim)] hover:text-[var(--ink)]">
+                {label} ↗
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
       {isLocalNetwork && (
-        <div className="fixed bottom-4 left-4 z-10">
+        <div className="fixed bottom-4 right-4 z-10">
           <Faucet />
         </div>
       )}
-      <div className="wrap border-t border-white/10 py-5 font-mono text-[11px] uppercase tracking-[0.18em] opacity-50">
-        Built on Base · Balancer · Uniswap V2 forks
-      </div>
     </footer>
   );
 };

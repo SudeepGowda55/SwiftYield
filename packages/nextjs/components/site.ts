@@ -17,7 +17,7 @@ export const OG_IMAGE = {
 };
 
 export const NAV = [
-  { label: "Loop", href: "/" },
+  { label: "Strike", href: "/" },
   { label: "Mechanism", href: "/how-it-works" },
   { label: "Verify", href: "/authenticate" },
   { label: "Deploy", href: "/arbitrage/base-tenderly" },

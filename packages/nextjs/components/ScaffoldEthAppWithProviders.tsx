@@ -1,14 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { RainbowKitProvider, darkTheme, lightTheme } from "@rainbow-me/rainbowkit";
+import { useEffect } from "react";
+import { RainbowKitProvider, lightTheme } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useTheme } from "next-themes";
 import { Toaster } from "react-hot-toast";
 import { WagmiProvider } from "wagmi";
 import { Footer } from "~~/components/Footer";
 import { Header } from "~~/components/Header";
-import { Cursor } from "~~/components/motion/Cursor";
+import { ArcCursor } from "~~/components/motion/ArcCursor";
 import { PageTransitionProvider } from "~~/components/motion/PageTransition";
 import { SmoothScroll } from "~~/components/motion/SmoothScroll";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
@@ -30,12 +29,12 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
   return (
     <PageTransitionProvider>
       <SmoothScroll />
-      <div className="flex flex-col min-h-screen">
-        <Header />
-        <main className="relative flex flex-col flex-1">{children}</main>
+      <Header />
+      <div className="flex min-h-screen flex-col lg:pl-[var(--rail)]">
+        <main className="relative flex flex-1 flex-col">{children}</main>
         <Footer />
       </div>
-      <Cursor />
+      <ArcCursor />
       <Toaster />
     </PageTransitionProvider>
   );
@@ -49,23 +48,22 @@ export const queryClient = new QueryClient({
   },
 });
 
+// RainbowKit in the storm palette: sharp corners, sunk-orange plates, plum ink
+const walletTheme = (() => {
+  const t = lightTheme({ accentColor: "#22072b", accentColorForeground: "#ff6a13", borderRadius: "none" });
+  t.colors.connectButtonBackground = "#e8530a";
+  t.colors.connectButtonText = "#22072b";
+  t.colors.modalBackground = "#fff3e2";
+  t.shadows.connectButton = "0 0 0 1px rgba(34,7,43,0.24)";
+  return t;
+})();
+
 export const ScaffoldEthAppWithProviders = ({ children }: { children: React.ReactNode }) => {
-  const { resolvedTheme } = useTheme();
-  const isDarkMode = resolvedTheme === "dark";
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
         <ProgressBar />
-        <RainbowKitProvider
-          avatar={BlockieAvatar}
-          theme={mounted ? (isDarkMode ? darkTheme() : lightTheme()) : lightTheme()}
-        >
+        <RainbowKitProvider avatar={BlockieAvatar} theme={walletTheme}>
           <ScaffoldEthApp>{children}</ScaffoldEthApp>
         </RainbowKitProvider>
       </QueryClientProvider>

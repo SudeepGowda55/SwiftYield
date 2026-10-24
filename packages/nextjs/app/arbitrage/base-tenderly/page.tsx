@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { abi, bytecode } from "./contract";
 import { ethers } from "ethers";
+import { Flicker } from "~~/components/motion/Flicker";
 import { Magnetic } from "~~/components/motion/Magnetic";
 import { Reveal } from "~~/components/motion/Reveal";
-import { SplitHeading } from "~~/components/motion/SplitHeading";
 
 const README = "https://github.com/SudeepGowda55/SwiftYield?tab=readme-ov-file#for-testing-the-app";
 
@@ -67,7 +67,7 @@ const Page = () => {
 
   const steps = [
     {
-      n: "01",
+      n: 1,
       title: "Fund the deployer",
       body: "Before you deploy the contract make sure you have sufficient funds. Get 100 ETH from the faucet.",
       action: "Get funds",
@@ -75,7 +75,7 @@ const Page = () => {
       key: "funds" as const,
     },
     {
-      n: "02",
+      n: 2,
       title: "Deploy FlashLoan.sol",
       body: "To run the Flash Loan Arbitrage Bot you need to deploy a FlashLoan contract, and you need to run a bot.",
       action: "Deploy contract",
@@ -85,32 +85,38 @@ const Page = () => {
   ];
 
   return (
-    <div className="wrap py-16 sm:py-24">
-      <span className="label">04 · Deploy · Tenderly Base vnet</span>
-      <SplitHeading
+    <div className="page py-14 sm:py-24">
+      <Flicker
         as="h1"
-        text="Deploy your loop contract."
-        accent={["loop"]}
-        className="font-display mt-4 max-w-4xl text-[10vw] sm:text-6xl lg:text-7xl font-bold leading-[0.95]"
+        text="Build your lightning rod."
+        hot={["rod."]}
+        className="font-display max-w-5xl text-[11vw] font-extrabold leading-[0.82] sm:text-8xl lg:text-[9rem]"
       />
+      <p className="max-w-xl text-lg text-[var(--ink-dim)]">
+        Deploy your own FlashLoan contract on the Tenderly Base virtual testnet. Every strike the bot fires runs through
+        it.
+      </p>
 
       <Reveal className="mt-12 grid gap-4 md:grid-cols-2">
         {steps.map(s => (
-          <div key={s.n} className="ticket flex flex-col">
-            <div className="flex items-center justify-between">
-              <span className="label">Step {s.n}</span>
-              {busy === s.key && <span className="chip !text-[var(--loan)]">Pending…</span>}
+          <div key={s.n} className="plate flex flex-col">
+            <span className="font-display text-5xl font-extrabold text-[var(--spark)]">{s.n}</span>
+            <h2 className="font-display mt-4 text-2xl sm:text-3xl font-extrabold">{s.title}</h2>
+            <p className="flex-1 text-[var(--ink-dim)]">{s.body}</p>
+            {/* charging bar while the RPC call is pending */}
+            <div className="mb-5 h-1 overflow-hidden bg-[var(--wire)]" aria-hidden>
+              {busy === s.key && (
+                <div className="h-full w-1/3 animate-[charge_0.9s_ease-in-out_infinite] bg-[var(--spark)]" />
+              )}
             </div>
-            <h2 className="font-display mt-6 text-2xl font-bold">{s.title}</h2>
-            <p className="flex-1 text-[var(--ink-2)]">{s.body}</p>
             <div>
               <Magnetic>
                 <button
                   onClick={s.onClick}
                   disabled={busy !== null}
-                  className={`cta ${s.key === "deploy" ? "cta-volt" : ""} disabled:opacity-50`}
+                  className={`${s.key === "deploy" ? "strike-btn" : "strike-btn-ghost"} disabled:opacity-50`}
                 >
-                  {s.action} <span aria-hidden>→</span>
+                  {busy === s.key ? "Charging…" : s.action} <span aria-hidden>→</span>
                 </button>
               </Magnetic>
             </div>
@@ -119,37 +125,37 @@ const Page = () => {
       </Reveal>
 
       <Reveal className="mt-4 grid gap-4 md:grid-cols-[1.4fr_1fr]">
-        <div className="ticket" style={{ background: "var(--ink)", color: "var(--paper)" }}>
-          <span className="label !text-white/50">Your contract</span>
+        <div className="border wire bg-[var(--field-deep)] p-6 sm:p-8">
+          <h2 className="font-display text-3xl font-extrabold">Your contract</h2>
           {contractAddress ? (
-            <p className="font-mono text-sm break-all">
+            <p className="font-data break-all text-sm">
               Your Flash Loan contract address is deployed at{" "}
               <Link
                 href={`https://dashboard.tenderly.co/explorer/vnet/753ba0a6-023a-4c8d-b3e4-60f03d6dc4b7/tx/${flashLoanTxHash}`}
                 target="_blank"
-                className="text-[var(--volt)] underline underline-offset-4"
+                className="font-bold underline underline-offset-4"
               >
                 {contractAddress}
               </Link>
             </p>
           ) : (
-            <p className="font-mono text-sm opacity-60">No contract deployed from this browser yet.</p>
+            <p className="font-data text-sm text-[var(--ink-dim)]">No contract deployed from this browser yet.</p>
           )}
         </div>
-        <div className="ticket">
-          <span className="label">Step 03 · Run the bot</span>
+        <div className="plate">
+          <h2 className="font-display text-3xl font-extrabold">3 · Run the bot</h2>
           <p>
             After the contract is deployed, clone the{" "}
-            <Link href={README} target="_blank" className="font-semibold underline underline-offset-4">
+            <Link href={README} target="_blank" className="font-bold underline underline-offset-4">
               Swift Yield repo
             </Link>
             , then follow the{" "}
-            <Link href={README} target="_blank" className="font-semibold underline underline-offset-4">
+            <Link href={README} target="_blank" className="font-bold underline underline-offset-4">
               instructions for testing the app
             </Link>{" "}
             and provide it with the newly deployed Flash Loan contract address.
           </p>
-          <code className="chip">yarn install && yarn bot</code>
+          <code className="font-data tag">yarn install && yarn bot</code>
         </div>
       </Reveal>
     </div>
