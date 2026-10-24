@@ -8,6 +8,9 @@ import { Toaster } from "react-hot-toast";
 import { WagmiProvider } from "wagmi";
 import { Footer } from "~~/components/Footer";
 import { Header } from "~~/components/Header";
+import { Cursor } from "~~/components/motion/Cursor";
+import { PageTransitionProvider } from "~~/components/motion/PageTransition";
+import { SmoothScroll } from "~~/components/motion/SmoothScroll";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { ProgressBar } from "~~/components/scaffold-eth/ProgressBar";
 import { useNativeCurrencyPrice } from "~~/hooks/scaffold-eth";
@@ -25,14 +28,16 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
   }, [setNativeCurrencyPrice, price]);
 
   return (
-    <>
+    <PageTransitionProvider>
+      <SmoothScroll />
       <div className="flex flex-col min-h-screen">
         <Header />
         <main className="relative flex flex-col flex-1">{children}</main>
         <Footer />
       </div>
+      <Cursor />
       <Toaster />
-    </>
+    </PageTransitionProvider>
   );
 };
 

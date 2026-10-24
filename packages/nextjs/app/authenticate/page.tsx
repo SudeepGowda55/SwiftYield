@@ -1,10 +1,86 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { verify } from "../api/verify";
 import { IDKitWidget, type ISuccessResult, VerificationLevel } from "@worldcoin/idkit";
+import gsap from "gsap";
+import { Magnetic } from "~~/components/motion/Magnetic";
+import { TransitionLink } from "~~/components/motion/PageTransition";
+import { Reveal } from "~~/components/motion/Reveal";
+import { SplitHeading } from "~~/components/motion/SplitHeading";
+
+/** Orb that watches the pointer: World ID's iris scan, drawn in ink and volt. */
+const Orb = () => {
+  const ref = useRef<SVGSVGElement>(null);
+  useEffect(() => {
+    const svg = ref.current!;
+    const ctx = gsap.context(() => {
+      gsap.to(".orb-ring", {
+        rotate: i => (i % 2 ? -360 : 360),
+        duration: i => 18 + i * 6,
+        repeat: -1,
+        ease: "none",
+        svgOrigin: "200 200",
+      });
+      gsap.to(".orb-scan", { attr: { y: 300 }, duration: 2.2, yoyo: true, repeat: -1, ease: "sine.inOut" });
+    }, svg);
+    const px = gsap.quickTo(svg.querySelector(".orb-pupil"), "x", { duration: 0.6, ease: "power3" });
+    const py = gsap.quickTo(svg.querySelector(".orb-pupil"), "y", { duration: 0.6, ease: "power3" });
+    const move = (e: PointerEvent) => {
+      const b = svg.getBoundingClientRect();
+      const dx = e.clientX - (b.left + b.width / 2);
+      const dy = e.clientY - (b.top + b.height / 2);
+      const k = Math.min(1, 300 / Math.hypot(dx, dy || 1));
+      px(dx * 0.06 * k);
+      py(dy * 0.06 * k);
+    };
+    window.addEventListener("pointermove", move);
+    return () => {
+      ctx.revert();
+      window.removeEventListener("pointermove", move);
+    };
+  }, []);
+
+  return (
+    <svg
+      ref={ref}
+      viewBox="0 0 400 400"
+      className="w-full max-w-[420px]"
+      role="img"
+      aria-label="Animated orb scanning for proof of personhood"
+    >
+      <defs>
+        <clipPath id="orb-clip">
+          <circle cx="200" cy="200" r="110" />
+        </clipPath>
+      </defs>
+      {[180, 150, 128].map((r, i) => (
+        <circle
+          key={r}
+          className="orb-ring"
+          cx="200"
+          cy="200"
+          r={r}
+          fill="none"
+          stroke="#0e0e10"
+          strokeWidth={i === 0 ? 1 : 2}
+          strokeDasharray={i === 0 ? "2 10" : i === 1 ? "60 14" : "4 6"}
+        />
+      ))}
+      <circle cx="200" cy="200" r="110" fill="#f7f5ef" stroke="#0e0e10" strokeWidth="2" />
+      <g clipPath="url(#orb-clip)">
+        <g className="orb-pupil">
+          <circle cx="200" cy="200" r="58" fill="#d9ff3d" stroke="#0e0e10" strokeWidth="2" />
+          <circle cx="200" cy="200" r="26" fill="#0e0e10" />
+          <circle cx="212" cy="188" r="7" fill="#f7f5ef" />
+        </g>
+        <rect className="orb-scan" x="80" y="100" width="240" height="3" fill="#ff5a1f" opacity="0.8" />
+      </g>
+    </svg>
+  );
+};
 
 const Worldcoin = () => {
   const router = useRouter();
@@ -24,16 +100,21 @@ const Worldcoin = () => {
   };
 
   return (
-    <div>
-      <div className="min-h-[60vh] flex flex-row items-center justify-center bg-gray-100 space-x-6">
-        {/* Human Verification Box */}
-        <div className="bg-white text-black shadow-md rounded-lg p-8 max-w-md w-full">
-          <h1 className="text-2xl font-bold mb-4 text-center">Human Verification</h1>
-          <p className="mb-2 text-center">
+    <div className="wrap py-16 sm:py-24">
+      <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr]">
+        <div>
+          <span className="label">03 · Verify</span>
+          <SplitHeading
+            as="h1"
+            text="Prove you're human. Then the loop is yours."
+            accent={["human."]}
+            className="font-display mt-4 text-[10vw] sm:text-6xl font-bold leading-[0.95]"
+          />
+          <p className="max-w-lg text-lg text-[var(--ink-2)]">
             Please confirm your identity by verifying that you are a human. This step helps us prevent automated access
             and maintain security.
           </p>
-          <div className="flex justify-center mt-6">
+          <div className="mt-8 flex flex-wrap items-center gap-3">
             <IDKitWidget
               app_id="app_staging_1c7e9401f6b5e43c4f649812c0c4ef76"
               action="cloud-verification"
@@ -42,53 +123,52 @@ const Worldcoin = () => {
               verification_level={VerificationLevel.Orb}
             >
               {({ open }) => (
-                <button
-                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-                  onClick={open}
-                >
-                  Verify with World ID
-                </button>
+                <Magnetic>
+                  <button className="cta" onClick={open}>
+                    Verify with World ID <span aria-hidden>→</span>
+                  </button>
+                </Magnetic>
               )}
             </IDKitWidget>
+            <Link href={"https://simulator.worldcoin.org/id/0x18310f83"} target="_blank" className="ghost-link">
+              Worldcoin simulator ↗
+            </Link>
           </div>
         </div>
+        <div className="flex justify-center">
+          <Orb />
+        </div>
+      </div>
 
-        {/* Worldcoin Verification Box */}
-        <div className="bg-white text-black shadow-md rounded-lg p-8 max-w-md w-full">
-          <h1 className="text-2xl font-bold mb-4 text-center">Worldcoin Verification</h1>
-          <p className="mb-2 text-center">
-            Verify your identity using the Worldcoin simulator. This innovative tool ensures the authenticity of user
-            identities through advanced verification methods.
-          </p>
-          <p className="mb-6 text-center">
-            Access the simulator here:{" "}
-            <span className="text-orange-600 font-semibold">
-              <Link href={"https://simulator.worldcoin.org/id/0x18310f83"}>Worldcoin Simulator</Link>
-            </span>
+      <Reveal className="mt-16 grid gap-4 md:grid-cols-3">
+        <div className="ticket">
+          <span className="label">01 · Simulator</span>
+          <h2 className="font-display mt-6 text-xl font-bold">Worldcoin verification</h2>
+          <p className="text-[var(--ink-2)]">
+            Verify your identity using the Worldcoin simulator. It checks the authenticity of user identities with
+            zero-knowledge proofs.
           </p>
         </div>
-      </div>
-      <div className="bg-gray-100 text-black">
-        <div className="flex px-8 mx-7 flex-col items-center w-[90vw]">
-          <b className="text-left">Note:</b>
-          <p>
-            You can either Scan the QR code from a simulator or click on the QR code the code will be copied and then
-            select paste code option in simulator and paste the code, choose verify with orb and wait until verification
-            is done
-          </p>
-          <p>
-            {" "}
-            <b>Make sure the identity is orb and device verified</b>
-          </p>
-          <p>
-            For the time being If you are not able to verify it, just move to the Flash Loan contract deploy page by
-            clicking here{" "}
-            <Link href="/arbitrage/base-tenderly" className="text-orange-500">
-              /arbitrage/base-tenderly
-            </Link>{" "}
+        <div className="ticket">
+          <span className="label">02 · Scan</span>
+          <h2 className="font-display mt-6 text-xl font-bold">Scan or paste the code</h2>
+          <p className="text-[var(--ink-2)]">
+            Scan the QR code from the simulator, or click the QR code to copy it, choose paste code in the simulator,
+            pick verify with orb and wait until verification is done.
           </p>
         </div>
-      </div>
+        <div className="ticket" style={{ background: "var(--volt)" }}>
+          <span className="label !text-[var(--ink)]">03 · Requirement</span>
+          <h2 className="font-display mt-6 text-xl font-bold">Orb and device verified</h2>
+          <p>
+            Make sure the identity is orb and device verified. If you can&apos;t verify right now, skip to the{" "}
+            <TransitionLink href="/arbitrage/base-tenderly" className="font-semibold underline underline-offset-4">
+              Flash Loan contract deploy page
+            </TransitionLink>
+            .
+          </p>
+        </div>
+      </Reveal>
     </div>
   );
 };

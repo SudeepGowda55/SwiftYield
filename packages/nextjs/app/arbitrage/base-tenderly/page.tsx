@@ -4,6 +4,11 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { abi, bytecode } from "./contract";
 import { ethers } from "ethers";
+import { Magnetic } from "~~/components/motion/Magnetic";
+import { Reveal } from "~~/components/motion/Reveal";
+import { SplitHeading } from "~~/components/motion/SplitHeading";
+
+const README = "https://github.com/SudeepGowda55/SwiftYield?tab=readme-ov-file#for-testing-the-app";
 
 const Page = () => {
   const provider = new ethers.JsonRpcProvider(
@@ -13,8 +18,10 @@ const Page = () => {
   const userAddress = "0x2BAB1A3b3567D6670Fe85fAAc8434A15e0084b7F";
   const [contractAddress, setContractAddress] = useState<string | null>(null);
   const [flashLoanTxHash, setFlashLoanTxHash] = useState<string | null>(null);
+  const [busy, setBusy] = useState<"funds" | "deploy" | null>(null);
 
   const deployContract = async () => {
+    setBusy("deploy");
     const flashLoanContract = new ethers.ContractFactory(abi, bytecode, signer);
     try {
       const contract = await flashLoanContract.deploy();
@@ -30,15 +37,20 @@ const Page = () => {
       alert("Flash Loan contract deployed successfully, Please refresh the page to see the contract address");
     } catch (error) {
       console.error(error);
+    } finally {
+      setBusy(null);
     }
   };
 
   const getFunds = async () => {
+    setBusy("funds");
     try {
       await provider.send("tenderly_setBalance", [userAddress, "0x56BC75E2D63100000"]);
       alert("Your account received 100 WETH");
     } catch (error) {
       console.error(error);
+    } finally {
+      setBusy(null);
     }
   };
 
@@ -53,85 +65,93 @@ const Page = () => {
     }
   }, [contractAddress]);
 
+  const steps = [
+    {
+      n: "01",
+      title: "Fund the deployer",
+      body: "Before you deploy the contract make sure you have sufficient funds. Get 100 ETH from the faucet.",
+      action: "Get funds",
+      onClick: getFunds,
+      key: "funds" as const,
+    },
+    {
+      n: "02",
+      title: "Deploy FlashLoan.sol",
+      body: "To run the Flash Loan Arbitrage Bot you need to deploy a FlashLoan contract, and you need to run a bot.",
+      action: "Deploy contract",
+      onClick: deployContract,
+      key: "deploy" as const,
+    },
+  ];
+
   return (
-    <div className="p-6 font-sans min-h-screen flex flex-col justify-center items-center">
-      {/* Grid Layout for Sections */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl">
-        {/* Left Section */}
-        <div className="flex flex-col items-center gap-4">
-          {/* Instructions */}
-          <div className="p-4 border rounded shadow-md bg-white text-black w-full flex-1">
-            <p className="text-lg font-bold">To run the Flash Loan Arbitrage Bot</p>
-            <p>You need to deploy a FlashLoan Contract</p>
-            <p>And you need to run a bot</p>
+    <div className="wrap py-16 sm:py-24">
+      <span className="label">04 · Deploy · Tenderly Base vnet</span>
+      <SplitHeading
+        as="h1"
+        text="Deploy your loop contract."
+        accent={["loop"]}
+        className="font-display mt-4 max-w-4xl text-[10vw] sm:text-6xl lg:text-7xl font-bold leading-[0.95]"
+      />
+
+      <Reveal className="mt-12 grid gap-4 md:grid-cols-2">
+        {steps.map(s => (
+          <div key={s.n} className="ticket flex flex-col">
+            <div className="flex items-center justify-between">
+              <span className="label">Step {s.n}</span>
+              {busy === s.key && <span className="chip !text-[var(--loan)]">Pending…</span>}
+            </div>
+            <h2 className="font-display mt-6 text-2xl font-bold">{s.title}</h2>
+            <p className="flex-1 text-[var(--ink-2)]">{s.body}</p>
+            <div>
+              <Magnetic>
+                <button
+                  onClick={s.onClick}
+                  disabled={busy !== null}
+                  className={`cta ${s.key === "deploy" ? "cta-volt" : ""} disabled:opacity-50`}
+                >
+                  {s.action} <span aria-hidden>→</span>
+                </button>
+              </Magnetic>
+            </div>
           </div>
+        ))}
+      </Reveal>
 
-          {/* Deploy Contract Button */}
-          <button
-            onClick={deployContract}
-            className="px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-sm"
-          >
-            Deploy contract
-          </button>
+      <Reveal className="mt-4 grid gap-4 md:grid-cols-[1.4fr_1fr]">
+        <div className="ticket" style={{ background: "var(--ink)", color: "var(--paper)" }}>
+          <span className="label !text-white/50">Your contract</span>
+          {contractAddress ? (
+            <p className="font-mono text-sm break-all">
+              Your Flash Loan contract address is deployed at{" "}
+              <Link
+                href={`https://dashboard.tenderly.co/explorer/vnet/753ba0a6-023a-4c8d-b3e4-60f03d6dc4b7/tx/${flashLoanTxHash}`}
+                target="_blank"
+                className="text-[var(--volt)] underline underline-offset-4"
+              >
+                {contractAddress}
+              </Link>
+            </p>
+          ) : (
+            <p className="font-mono text-sm opacity-60">No contract deployed from this browser yet.</p>
+          )}
         </div>
-
-        {/* Right Section */}
-        <div className="flex flex-col items-center gap-4">
-          {/* Funds Instructions */}
-          <div className="p-4 border rounded shadow-md bg-white text-black w-full flex-1">
-            <p>Before you deploy the contract make sure you have sufficient funds</p>
-            <p>Get 100 ETH from the faucet</p>
-          </div>
-
-          {/* Get Funds Button */}
-          <button onClick={getFunds} className="px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-sm">
-            Get funds
-          </button>
-        </div>
-      </div>
-
-      {/* Additional Content Centered */}
-      <div className="mt-8 text-center max-w-2xl font-bold">
-        {contractAddress && (
-          <p className="mt-4">
-            Your Flash Loan contract address is deployed at{" "}
-            <Link
-              href={`https://dashboard.tenderly.co/explorer/vnet/753ba0a6-023a-4c8d-b3e4-60f03d6dc4b7/tx/${flashLoanTxHash}`}
-              target="_blank"
-              className="text-blue-500 underline"
-            >
-              {contractAddress}
+        <div className="ticket">
+          <span className="label">Step 03 · Run the bot</span>
+          <p>
+            After the contract is deployed, clone the{" "}
+            <Link href={README} target="_blank" className="font-semibold underline underline-offset-4">
+              Swift Yield repo
             </Link>
+            , then follow the{" "}
+            <Link href={README} target="_blank" className="font-semibold underline underline-offset-4">
+              instructions for testing the app
+            </Link>{" "}
+            and provide it with the newly deployed Flash Loan contract address.
           </p>
-        )}
-        <p>
-          {" "}
-          After the contract is deployed, you need to clone this repo{" "}
-          <b className="text-blue-500 underline">
-            {" "}
-            <Link
-              href={"https://github.com/SudeepGowda55/SwiftYield?tab=readme-ov-file#for-testing-the-app"}
-              target="_blank"
-            >
-              Swift Yield Repo
-            </Link>{" "}
-          </b>{" "}
-        </p>
-        <p>
-          {" "}
-          Then follow this{" "}
-          <b className="text-blue-500 underline">
-            {" "}
-            <Link
-              href={"https://github.com/SudeepGowda55/SwiftYield?tab=readme-ov-file#for-testing-the-app"}
-              target="_blank"
-            >
-              Instructions for testing the app
-            </Link>{" "}
-          </b>{" "}
-          and provide it with the newly deployed Flash Loan contract Address{" "}
-        </p>
-      </div>
+          <code className="chip">yarn install && yarn bot</code>
+        </div>
+      </Reveal>
     </div>
   );
 };
